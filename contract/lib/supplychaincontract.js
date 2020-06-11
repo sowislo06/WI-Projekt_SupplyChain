@@ -862,6 +862,7 @@ class SupplychainContract extends Contract {
      * Usage:  queryStation ('Asset001')
      * Usage: ["Asset001"]
      *
+     * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/assets/Asset001" 
     */
    async queryAsset(ctx, assetId) {
         console.info('============= queryAsset ===========');
