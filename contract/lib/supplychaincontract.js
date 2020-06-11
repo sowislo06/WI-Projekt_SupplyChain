@@ -670,6 +670,8 @@ class SupplychainContract extends Contract {
      * 
      * Usage: submitTransaction ('createStation', 'Station001', 'Wareneingang')
      * Usage: [{"stationId":"Station001","name":"Wareneingang"}]
+     * 
+     * curl -X POST -H "authorization: Basic SEVCOkhFQg==" -H "Content-Type: application/json" -d "{\"stationId\":\"Station020\",\"name\":\"Qualitätssicherung\"}" "http://localhost:3000/api/stations/"
     */
    async createStation(ctx, args) {
 
@@ -896,8 +898,8 @@ class SupplychainContract extends Contract {
 
 
         // Return a serialized asset to caller of smart contract
-        // return assetAsBytes;
-        return asset;
+         return assetAsBytes;
+        //return asset;
     }
 
     /**

@@ -11,6 +11,8 @@ const supplychainRouter = express.Router();
 // Bring key classes into scope, most importantly Fabric SDK network class
 const Order = require('../../contract/lib/order.js');
 const Station = require('../../contract/lib/station.js');
+const Asset = require('../../contract/lib/asset.js');
+
 
 const STATUS_SUCCESS = 200;
 const STATUS_CLIENT_ERROR = 400;
@@ -24,6 +26,7 @@ const INVALID_HEADER = 1001;
 const SUCCESS = 0;
 const ORDER_NOT_FOUND = 2000;
 const STATION_NOT_FOUND = 2000;
+const ASSET_NOT_FOUND = 2000;
 
 async function getUsernamePassword(request) {
     // check for basic auth header
@@ -249,6 +252,23 @@ supplychainRouter.route('/orders/:id').delete(function (request, response) {
 
 ////////////////////////////////// Station Management APIs ///////////////////////////////////////
 
+supplychainRouter.route('/stations').post(function (request, response) {
+    submitTx(request, 'createStation', JSON.stringify(request.body))
+        .then((result) => {
+            // process response
+            console.log('\nProcess createStation transaction.');
+            let station = Station.fromBuffer(result);
+            console.log(`station ${station.stationId} : name = ${station.name}`);
+            response.status(STATUS_SUCCESS);
+            response.send(station);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
+                "There was a problem creating the station."));
+        });
+});
+
+
 supplychainRouter.route('/stations/:id').get(function (request, response) {
     submitTx(request, 'queryStation', request.params.id)
         .then((queryStationResponse) => {
@@ -267,9 +287,25 @@ supplychainRouter.route('/stations/:id').get(function (request, response) {
 
 ////////////////////////////////// Asset Management APIs ///////////////////////////////////////
 
-////////////////////////////////// Activity Management APIs ///////////////////////////////////////
+supplychainRouter.route('/assets/:id').get(function (request, response) {
+    submitTx(request, 'queryAsset', request.params.id)
+        .then((queryAssetResponse) => {
+            // process response
+            let asset = Asset.fromBuffer(queryAssetResponse);
+            console.log(`asset ${asset.assetId} : name = ${asset.name}, station = ${asset.station}`);
+            response.status(STATUS_SUCCESS);
+            response.send(asset);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, ASSET_NOT_FOUND,
+                'Asset id, ' + request.params.id +
+                ' does not exist or the user does not have access to asset details at this time.'));
+        });
+});
 
-////////////////////////////////// User Management APIs ///////////////////////////////////////
+////////////////////////////////// Activity Management APIs ////////////////////////////////////
+
+////////////////////////////////// User Management APIs ////////////////////////////////////////
 
 //  Purpose:    POST api to register new users with Hyperledger Fabric CA;
 //  Note:       After registration, users have to enroll to get certificates
