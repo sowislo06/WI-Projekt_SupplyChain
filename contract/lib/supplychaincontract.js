@@ -1093,6 +1093,8 @@ class SupplychainContract extends Contract {
         * Usage: [{"activityId":"Activity001","name":"Umlagerung","assetId":"Asset001","stationId":"Station001"}]
         * 
         * Usage: [{"stationId":"Station001","name":"Wareneingang"}]
+        * 
+        * curl -X POST -H "authorization: Basic YWRtaW46YWRtaW5wdw==" -H "Content-Type: application/json" -d "{\"activityId\":\"Activity385\",\"name\":\"Umlagerung\",\"assetId\":\"Asset001\",\"stationId\":\"Station001\"}" "http://localhost:3000/api/activities/"  
     */
     async createActivity(ctx, args) {
 

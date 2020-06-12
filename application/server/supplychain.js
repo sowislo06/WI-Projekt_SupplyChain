@@ -12,7 +12,7 @@ const supplychainRouter = express.Router();
 const Order = require('../../contract/lib/order.js');
 const Station = require('../../contract/lib/station.js');
 const Asset = require('../../contract/lib/asset.js');
-
+const Activity = require('../../contract/lib/activity.js');
 
 const STATUS_SUCCESS = 200;
 const STATUS_CLIENT_ERROR = 400;
@@ -381,6 +381,22 @@ supplychainRouter.route('/assets-station/:id').get(function (request, response) 
 
 
 ////////////////////////////////// Activity Management APIs ////////////////////////////////////
+
+supplychainRouter.route('/activities').post(function (request, response) {
+    submitTx(request, 'createActivity', JSON.stringify(request.body))
+        .then((result) => {
+            // process response
+            console.log('\nProcess createActivity transaction.');
+            let activity = Activity.fromBuffer(result);
+            console.log(`asset ${activity.activityId} : name = ${activity.name} : asset = ${activity.station} : station = ${activity.station} : startDate = ${activity.startDate} : endDate = ${activity.endDate} : user = ${activity.user}`);
+            response.status(STATUS_SUCCESS);
+            response.send(activity);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
+                "There was a problem creating the activity."));
+        });
+});
 
 ////////////////////////////////// User Management APIs ////////////////////////////////////////
 
