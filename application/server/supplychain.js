@@ -268,6 +268,20 @@ supplychainRouter.route('/stations').post(function (request, response) {
         });
 });
 
+supplychainRouter.route('/stations').get(function (request, response) {
+    submitTx(request, 'queryAllStations', '')
+        .then((queryStationResponse) => {
+            //  response is already a string;  not a buffer
+            let stations = queryStationResponse;
+            response.status(STATUS_SUCCESS);
+            response.send(stations);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
+                "There was a problem getting the list of stations."));
+        });
+});  //  process route stations/
+
 
 supplychainRouter.route('/stations/:id').get(function (request, response) {
     submitTx(request, 'queryStation', request.params.id)
@@ -282,6 +296,22 @@ supplychainRouter.route('/stations/:id').get(function (request, response) {
             response.send(utils.prepareErrorResponse(error, STATION_NOT_FOUND,
                 'Station id, ' + request.params.id +
                 ' does not exist or the user does not have access to station details at this time.'));
+        });
+});
+
+// Delete designated station with id
+supplychainRouter.route('/stations/:id').delete(function (request, response) {
+    submitTx(request, 'deleteStation', request.params.id)
+        .then((deleteStationResponse) => {
+            // process response
+            console.log('Process DeleteStation transaction.');
+            console.log('Transaction complete.');
+            response.status(STATUS_SUCCESS);
+            response.send(deleteStationResponse);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
+                "There was a problem in deleting station, " + request.params.id));
         });
 });
 
@@ -302,6 +332,53 @@ supplychainRouter.route('/assets/:id').get(function (request, response) {
                 ' does not exist or the user does not have access to asset details at this time.'));
         });
 });
+
+supplychainRouter.route('/assets').post(function (request, response) {
+    submitTx(request, 'createAsset', JSON.stringify(request.body))
+        .then((result) => {
+            // process response
+            console.log('\nProcess createAsset transaction.');
+            let asset = Asset.fromBuffer(result);
+            console.log(`asset ${asset.assetId} : name = ${asset.name} : station = ${asset.station}`);
+            response.status(STATUS_SUCCESS);
+            response.send(asset);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
+                "There was a problem creating the asset."));
+        });
+});
+
+// Delete designated asset with id
+supplychainRouter.route('/assets/:id').delete(function (request, response) {
+    submitTx(request, 'deleteAsset', request.params.id)
+        .then((deleteAssetResponse) => {
+            // process response
+            console.log('Process DeleteAsset transaction.');
+            console.log('Transaction complete.');
+            response.status(STATUS_SUCCESS);
+            response.send(deleteAssetResponse);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
+                "There was a problem in deleting asset, " + request.params.id));
+        });
+});
+
+supplychainRouter.route('/assets-station/:id').get(function (request, response) {
+    submitTx(request, 'queryAssetsFromStation', request.params.id)
+        .then((queryAssetFromStationResponse) => {
+            //  response is already a string;  not a buffer
+            let assets = queryAssetFromStationResponse;
+            response.status(STATUS_SUCCESS);
+            response.send(assets);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
+                "There was a problem getting the list of assets."));
+        });
+});
+
 
 ////////////////////////////////// Activity Management APIs ////////////////////////////////////
 

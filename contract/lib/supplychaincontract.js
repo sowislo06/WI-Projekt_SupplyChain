@@ -773,6 +773,92 @@ class SupplychainContract extends Contract {
         //return station;
     }
 
+
+    /**
+     * queryAllStations
+     * 
+     * @param {Context} ctx the transaction context
+     * 
+     * Usage:  queryAllOrders ()
+     * 
+     * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/stations/" 
+    */
+    async queryAllStations(ctx) {
+        const startKey = 'Station0';
+        const endKey = 'Station999';
+
+        const iterator = await ctx.stub.getStateByRange(startKey, endKey);
+
+        const allResults = [];
+        while (true) {
+            const res = await iterator.next();
+
+            if (res.value && res.value.value.toString()) {
+    
+                console.log(res.value.value.toString('utf8'));
+
+                const Key = res.value.key;
+                let Record;
+                try {
+                    Record = JSON.parse(res.value.value.toString('utf8'));
+                } catch (err) {
+                    console.log(err);
+                    Record = res.value.value.toString('utf8');
+                }
+                
+                allResults.push({ Key, Record });
+                
+            }
+            if (res.done) {
+                console.log('end of data');
+                await iterator.close();
+                console.info(allResults);
+                return JSON.stringify(allResults);
+            }
+        }
+    }
+
+    /**
+     * deleteStation
+     *
+     * @param {Context} ctx the transaction context
+     * @param {String}  args
+     * Usage:  deleteStation ('Station001')
+     * 
+     * curl -X DELETE -H "authorization: Basic YWRtaW46YWRtaW5wdw" "http://localhost:3000/api/orders/Station987" 
+     */
+
+    async deleteStation(ctx, stationId) {
+
+        console.info('============= deleteStation ===========');
+        if (stationId.length < 1) {
+            throw new Error('Station Id required as input')
+        }
+        console.log("stationId = " + stationId);
+
+        var queryAssets = await this.queryAssetsFromStation(ctx, stationId);
+        if(queryAssets.length > 1) {
+            throw new Error('Products are still in the warehouse')
+        }
+
+        // Retrieve the current station using key provided
+        var stationAsBytes = await ctx.stub.getState(stationId);
+
+        if (!stationAsBytes || stationAsBytes.length === 0) {
+            throw new Error(`Error Message from deleteStation: Station with stationId = ${stationId} does not exist.`);
+        }
+
+        // Access Control: This transaction should only be invoked by designated originating Retailer or Producer
+        var station = Station.deserialize(stationAsBytes);
+        let userId = await this.getCurrentUserId(ctx);
+
+        if (userId != "admin") // admin only has access as a precaution. //&& (userId != order.retailerId) // This transaction should only be invoked by Producer or Retailer of order
+            throw new Error(`${userId} does not have access to delete order ${orderId}`);
+
+        await ctx.stub.deleteState(stationId); //remove the order from chaincode state
+    }
+
+
     //---------- ASSET -----------------
 
     /**
@@ -786,6 +872,8 @@ class SupplychainContract extends Contract {
      * Usage: [{"assetId":"Asset001","name":"Fifa 2020","stationId":"Station001"}]
      * 
      * Usage: [{"stationId":"Station001","name":"Wareneingang"}]
+     * 
+     * curl -X POST -H "authorization: Basic YWRtaW46YWRtaW5wdw==" -H "Content-Type: application/json" -d "{\"assetId\":\"Asset456\",\"name\":\"COD\",\"stationId\":\"Station001\"}" "http://localhost:3000/api/assets/"
     */
    async createAsset(ctx, args) {
 
@@ -911,6 +999,8 @@ class SupplychainContract extends Contract {
         * 
         * Usage: queryAssetsFromStation('Station001')
         * Usage: ["Station001"]
+        * 
+        * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/assets-station/Station001"
     */
     async queryAssetsFromStation(ctx, stationId) {
         const startKey = 'Asset0';
@@ -949,6 +1039,43 @@ class SupplychainContract extends Contract {
             }
         }
     }
+
+    /**
+     * deleteAsset
+     *
+     * @param {Context} ctx the transaction context
+     * @param {String}  args
+     * Usage:  deleteAsset ('Asset001')
+     * 
+     * curl -X DELETE -H "authorization: Basic YWRtaW46YWRtaW5wdw" "http://localhost:3000/api/assets/Asset001" 
+     */
+
+    async deleteAsset(ctx, assetId) {
+
+        console.info('============= deleteAsset ===========');
+        if (assetId.length < 1) {
+            throw new Error('assetId required as input')
+        }
+        console.log("assetId = " + assetId);
+
+
+        // Retrieve the current station using key provided
+        var assetAsBytes = await ctx.stub.getState(assetId);
+
+        if (!assetAsBytes || assetAsBytes.length === 0) {
+            throw new Error(`Error Message from deleteAsset: Station with assetId = ${assetId} does not exist.`);
+        }
+
+        // Access Control: This transaction should only be invoked by designated originating Retailer or Producer
+        //var asset = Station.deserialize(assetAsBytes); Wird benötigt, wenn man Abfrage macht. Siehe deleteOrder
+        let userId = await this.getCurrentUserId(ctx);
+
+        if (userId != "admin") // admin only has access as a precaution. //&& (userId != order.retailerId) // This transaction should only be invoked by Producer or Retailer of order
+            throw new Error(`${userId} does not have access to delete order ${assetId}`);
+
+        await ctx.stub.deleteState(assetId); //remove the order from chaincode state
+    }
+
 
 
     //---------- ACTIVITY -----------------
@@ -1103,6 +1230,47 @@ class SupplychainContract extends Contract {
         return activity;
     }
 
+    /**
+     * queryAllActivities
+     * 
+     * @param {Context} ctx the transaction context
+     * 
+     * Usage:  queryAllActivities ()
+    */
+    async queryAllActivities(ctx) {
+        const startKey = 'Activity0';
+        const endKey = 'Activity999';
+
+        const iterator = await ctx.stub.getStateByRange(startKey, endKey);
+
+        const allResults = [];
+        while (true) {
+            const res = await iterator.next();
+
+            if (res.value && res.value.value.toString()) {
+
+                console.log(res.value.value.toString('utf8'));
+
+                const Key = res.value.key;
+                let Record;
+                try {
+                    Record = JSON.parse(res.value.value.toString('utf8'));
+                } catch (err) {
+                    console.log(err);
+                    Record = res.value.value.toString('utf8');
+                }
+                
+                allResults.push({ Key, Record });
+                
+            }
+            if (res.done) {
+                console.log('end of data');
+                await iterator.close();
+                console.info(allResults);
+                return JSON.stringify(allResults);
+            }
+        }
+    }
 
 
 }  //  Class SupplychainContract
