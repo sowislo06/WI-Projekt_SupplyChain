@@ -27,6 +27,7 @@ const SUCCESS = 0;
 const ORDER_NOT_FOUND = 2000;
 const STATION_NOT_FOUND = 2000;
 const ASSET_NOT_FOUND = 2000;
+const ACTIVITY_NOT_FOUND = 2000;
 
 async function getUsernamePassword(request) {
     // check for basic auth header
@@ -395,6 +396,51 @@ supplychainRouter.route('/activities').post(function (request, response) {
             response.status(STATUS_SERVER_ERROR);
             response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
                 "There was a problem creating the activity."));
+        });
+});
+
+supplychainRouter.route('/activities').get(function (request, response) {
+    submitTx(request, 'queryAllActivities', '')
+        .then((queryActivityResponse) => {
+            //  response is already a string;  not a buffer
+            let activities = queryActivityResponse;
+            response.status(STATUS_SUCCESS);
+            response.send(activities);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
+                "There was a problem getting the list of activities."));
+        });
+});  //  process route activities/
+
+supplychainRouter.route('/activities/:id').get(function (request, response) {
+    submitTx(request, 'queryActivity', request.params.id)
+        .then((queryActivityResponse) => {
+            // process response
+            let activity = Activity.fromBuffer(queryActivityResponse);
+            //console.log(`asset ${activity.activityId} : name = ${activity.name}, asset = ${activity.station}, station = ${activity.station}, startDate = ${activity.startDate}, endDate = ${activity.endDate}, user = ${activity.user}`);
+            response.status(STATUS_SUCCESS);
+            response.send(activity);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, ACTIVITY_NOT_FOUND,
+                'Activity id, ' + request.params.id +
+                ' does not exist or the user does not have access to asset details at this time.'));
+        });
+});
+
+
+supplychainRouter.route('/activities-asset/:id').get(function (request, response) {
+    submitTx(request, 'queryActivityFromAsset', request.params.id)
+        .then((queryActivityFromAssetResponse) => {
+            //  response is already a string;  not a buffer
+            let activities = queryActivityFromAssetResponse;
+            response.status(STATUS_SUCCESS);
+            response.send(activities);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
+                "There was a problem getting the list of activities."));
         });
 });
 

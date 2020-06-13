@@ -781,11 +781,11 @@ class SupplychainContract extends Contract {
      * 
      * Usage:  queryAllOrders ()
      * 
-     * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/stations/" 
+     * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/stations/"  
     */
     async queryAllStations(ctx) {
-        const startKey = 'Station0';
-        const endKey = 'Station999';
+        const startKey = 'station-';
+        const endKey = '';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
@@ -1001,10 +1001,11 @@ class SupplychainContract extends Contract {
         * Usage: ["Station001"]
         * 
         * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/assets-station/Station001"
+        * 
     */
     async queryAssetsFromStation(ctx, stationId) {
-        const startKey = 'Asset0';
-        const endKey = 'Asset999';
+        const startKey = 'asset-';
+        const endKey = '';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
@@ -1192,6 +1193,8 @@ class SupplychainContract extends Contract {
          * Usage:  queryActivity ('Activity001')
          * Usage: ["Activity001"]
          *
+         * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/activities/Activity001"
+         * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/activities/Activity001" 
     */
     async queryActivity(ctx, activityId) {
         console.info('============= queryActivity ===========');
@@ -1228,8 +1231,8 @@ class SupplychainContract extends Contract {
 
 
         // Return a serialized activity to caller of smart contract
-        // return activityAsBytes;
-        return activity;
+        return activityAsBytes;
+        //return activity;
     }
 
     /**
@@ -1238,10 +1241,12 @@ class SupplychainContract extends Contract {
      * @param {Context} ctx the transaction context
      * 
      * Usage:  queryAllActivities ()
+     * 
+     * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/activities/"
     */
     async queryAllActivities(ctx) {
-        const startKey = 'Activity0';
-        const endKey = 'Activity999';
+        const startKey = 'activity-';
+        const endKey = '';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
@@ -1263,6 +1268,55 @@ class SupplychainContract extends Contract {
                 }
                 
                 allResults.push({ Key, Record });
+                
+            }
+            if (res.done) {
+                console.log('end of data');
+                await iterator.close();
+                console.info(allResults);
+                return JSON.stringify(allResults);
+            }
+        }
+    }
+
+        /**
+            * queryActivityFromAsset
+            * 
+            * @param {Context} ctx the transaction context
+            * @param {String} assetId
+            * 
+            * Usage: queryActivityFromAsset('Asset001')
+            * Usage: ["Asset001"]
+            * 
+            * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/activities-asset/Asset001"
+        */
+    async queryActivityFromAsset(ctx, assetId) {
+        const startKey = 'activity-';
+        const endKey = '';
+
+        const iterator = await ctx.stub.getStateByRange(startKey, endKey);
+
+        const allResults = [];
+        while (true) {
+            const res = await iterator.next();
+
+            const activityName = res.value.getValue().toString('utf8');
+
+            if (res.value && res.value.value.toString()) {
+                if(activityName.includes(assetId)) {
+
+                    console.log(res.value.value.toString('utf8'));
+
+                    const Key = res.value.key;
+                    let Record;
+                    try {
+                        Record = JSON.parse(res.value.value.toString('utf8'));
+                    } catch (err) {
+                        console.log(err);
+                        Record = res.value.value.toString('utf8');
+                    }
+                    allResults.push({ Key, Record });
+                }
                 
             }
             if (res.done) {
