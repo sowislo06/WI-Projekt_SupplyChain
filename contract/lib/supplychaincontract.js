@@ -806,15 +806,16 @@ class SupplychainContract extends Contract {
                     Record = res.value.value.toString('utf8');
                 }
                 
-                allResults.push({ Key, Record });
+                allResults.push(Record);
                 
             }
             if (res.done) {
                 console.log('end of data');
                 await iterator.close();
                 console.info(allResults);
-                return JSON.stringify(allResults);
+                return allResults;
             }
+
         }
     }
 

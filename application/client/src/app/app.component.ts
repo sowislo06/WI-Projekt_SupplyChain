@@ -7,7 +7,7 @@ import { AuthService } from './_services/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent{
-  title = 'Generic Supplychain Blockchain Sample';
+  title = 'WI-Projekt – Forschung und Entwicklung';
 
   constructor(private authService: AuthService){}
 

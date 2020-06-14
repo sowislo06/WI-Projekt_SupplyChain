@@ -20,15 +20,17 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 
 export class OrdersTableComponent implements OnInit {
   orders: MatTableDataSource<Order[]>;
+  stations: MatTableDataSource<Station[]>;
   currentUser: any;
-  columnsToDisplay = ['orderId', 'productId', 'price', 'quantity', 'producerId', 'retailerId', 'status', 'trackingInfo'];
+  //columnsToDisplay = ['orderId', 'productId', 'price', 'quantity', 'producerId', 'retailerId', 'status', 'trackingInfo'];
+  columnsToDisplay = ['stationId', 'name'];
   expandedElement: Order | null;
 
   @Input('regulator') regulator: boolean;
 
   constructor(private api: ApiService, private user: UserService, private cd: ChangeDetectorRef, public dialog: MatDialog) { }
 
-  ngOnInit() {
+  /*ngOnInit() {
     this.currentUser = this.user.getCurrentUser();
     //console.log("currentUser: "+this.currentUser);
     this.regulator = this.regulator !== undefined;
@@ -40,7 +42,22 @@ export class OrdersTableComponent implements OnInit {
       this.cd.markForCheck();
     })
     this.api.queryOrders();
+  }*/
+
+  ngOnInit() {
+    this.currentUser = this.user.getCurrentUser();
+    //console.log("currentUser: "+this.currentUser);
+    this.regulator = this.regulator !== undefined;
+    //console.log(`Regulator Boolean attribute is ${this.regulator ? '' : 'non-'}present!`);
+
+    // Load up the Orders from backend
+    this.api.stations$.subscribe(currentStations => {
+      this.stations = new MatTableDataSource(currentStations);
+      this.cd.markForCheck();
+    })
+    this.api.queryStations();
   }
+
 
   applyFilter(filterValue: string) {
     this.orders.filter = filterValue.trim().toLowerCase();
@@ -171,6 +188,11 @@ export interface Order {
   retailerId: string;
   currentOrderState: number;
   trackingInfo: string;
+}
+
+export interface Station {
+  stationId: string;
+  name: string;
 }
 
 export interface ShipperDialogData {

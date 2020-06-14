@@ -16,6 +16,9 @@ export class ApiService {
   private OrdersData = new BehaviorSubject([]);
   orders$: Observable<any[]> = this.OrdersData.asObservable();
 
+  private StationsData = new BehaviorSubject([]);
+  stations$: Observable<any[]> = this.StationsData.asObservable();
+
   statuses = {
     1: "ORDER_CREATED",
     2: "ORDER_RECEIVED",
@@ -94,6 +97,19 @@ export class ApiService {
     }, error => {
       console.log(JSON.stringify(error));
       alert("Problem getting orders: " + error['error']['message']);
+    })
+  }
+
+  queryStations() {
+    let headers = new HttpHeaders();
+    headers = this.createUserAuthorizationHeader(headers);
+    this.httpClient.get<any[]>(this.baseUrl + '/api/stations/', {headers:headers}).subscribe (stations => {
+      console.log (stations);
+
+      this.StationsData.next(stations);
+    }, error => {
+      console.log(JSON.stringify(error));
+      alert("Problem getting stations: " + error['error']['message']);
     })
   }
 
