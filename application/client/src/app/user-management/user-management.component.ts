@@ -24,6 +24,8 @@ export class UserManagementComponent implements OnInit{
 
   constructor(private api: ApiService, private auth: AuthService, private formBuilder: FormBuilder){}
 
+
+  //Init
   ngOnInit(){
     this.types = ["retailer", "producer", "shipper", "customer", "regulator"];
 
