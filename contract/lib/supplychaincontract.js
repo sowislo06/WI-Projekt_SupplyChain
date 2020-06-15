@@ -1029,7 +1029,7 @@ class SupplychainContract extends Contract {
                         console.log(err);
                         Record = res.value.value.toString('utf8');
                     }
-                    allResults.push({ Key, Record });
+                    allResults.push(Record);
                 }
                 
             }
@@ -1037,7 +1037,7 @@ class SupplychainContract extends Contract {
                 console.log('end of data');
                 await iterator.close();
                 console.info(allResults);
-                return JSON.stringify(allResults);
+                return allResults;
             }
         }
     }
@@ -1268,14 +1268,14 @@ class SupplychainContract extends Contract {
                     Record = res.value.value.toString('utf8');
                 }
                 
-                allResults.push({ Key, Record });
+                allResults.push(Record);
                 
             }
             if (res.done) {
                 console.log('end of data');
                 await iterator.close();
                 console.info(allResults);
-                return JSON.stringify(allResults);
+                return allResults;
             }
         }
     }
@@ -1316,7 +1316,7 @@ class SupplychainContract extends Contract {
                         console.log(err);
                         Record = res.value.value.toString('utf8');
                     }
-                    allResults.push({ Key, Record });
+                    allResults.push(Record);
                 }
                 
             }
@@ -1324,7 +1324,7 @@ class SupplychainContract extends Contract {
                 console.log('end of data');
                 await iterator.close();
                 console.info(allResults);
-                return JSON.stringify(allResults);
+                return allResults;
             }
         }
     }
