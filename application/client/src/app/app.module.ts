@@ -25,10 +25,12 @@ import { OrderHistoryComponent } from './_partials/order-history/order-history.c
 import { OrdersTableComponent } from './_partials/orders-table/orders-table.component';
 import { ToShipperDialog } from './_partials/orders-table/orders-table.component';
 import { DeleteOrderDialog } from './_partials/orders-table/orders-table.component';
+import { DashboardComponent } from './_partials/dashboard/dashboard.component';
 
 /* Services */
 import { ApiService, AuthService, UserService } from './_services/index';
 import { AuthGuard } from './_guards/auth.guard';
+
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { AuthGuard } from './_guards/auth.guard';
     OrderHistoryComponent,
     OrdersTableComponent,
     ToShipperDialog,
-    DeleteOrderDialog
+    DeleteOrderDialog,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
