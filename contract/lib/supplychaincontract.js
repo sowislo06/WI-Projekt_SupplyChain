@@ -669,7 +669,7 @@ class SupplychainContract extends Contract {
      * @param {String} name
      * 
      * Usage: submitTransaction ('createStation', 'Station001', 'Wareneingang')
-     * Usage: [{"stationId":"Station001","name":"Wareneingang"}]
+     * Usage: [{"stationId":"station-002","name":"Qualitätsicherung"}]
      * 
      * curl -X POST -H "authorization: Basic SEVCOkhFQg==" -H "Content-Type: application/json" -d "{\"stationId\":\"Station020\",\"name\":\"Qualitätssicherung\"}" "http://localhost:3000/api/stations/"
     */
@@ -1005,8 +1005,8 @@ class SupplychainContract extends Contract {
         * 
     */
     async queryAssetsFromStation(ctx, stationId) {
-        const startKey = 'asset-';
-        const endKey = '';
+        const startKey = 'asset-0000';
+        const endKey = 'asset-ZZZZ';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
@@ -1336,8 +1336,8 @@ class SupplychainContract extends Contract {
             * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/activities-asset/Asset001"
         */
     async queryActivityFromAsset(ctx, assetId) {
-        const startKey = 'activity-';
-        const endKey = '';
+        const startKey = 'activity-0000';
+        const endKey = 'activity-ZZZZ';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 

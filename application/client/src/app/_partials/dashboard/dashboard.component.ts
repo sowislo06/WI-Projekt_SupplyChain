@@ -2,7 +2,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ApiService, UserService } from '../../_services/index';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, TooltipPosition } from '@angular/material';
 import { Component, Inject, Input, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'dashboard',
@@ -16,11 +16,11 @@ export class DashboardComponent implements OnInit {
   currentUser: any;
   //columnsToDisplay = ['orderId', 'productId', 'price', 'quantity', 'producerId', 'retailerId', 'status', 'trackingInfo'];
   columnsToDisplay = ['assetId', 'name', 'stationId'];
-  //stationList: any[];
+  stationList: any[];
   assetList: any[];
   types: any[];
   success = false;
-  //station: Object;
+  station: Object;
   asset: Object;
   submitted = false;
   messageForm: FormGroup;
@@ -35,6 +35,12 @@ export class DashboardComponent implements OnInit {
     this.regulator = this.regulator !== undefined;
     //console.log(`Regulator Boolean attribute is ${this.regulator ? '' : 'non-'}present!`);
 
+    this.getStations();
+
+    this.messageForm = this.formBuilder.group({
+      stationid: ['', Validators.required]
+    });
+
     // Load up the Orders from backend
     this.api.assets$.subscribe(currentAssets => {
       this.assets = new MatTableDataSource(currentAssets);
@@ -42,7 +48,7 @@ export class DashboardComponent implements OnInit {
     })
     this.api.queryAllAssets();
   }
-/*
+
   onSubmit() {
     this.submitted = true;
 
@@ -50,23 +56,19 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
-    this.api.body = {
-      stationid: this.messageForm.controls.stationid.value,
-    }
+    this.api.id = this.messageForm.controls.stationid.value;
+    
 
-    this.api.queryAssetsFromStation().subscribe(api => {
-      this.asset = api
-      console.log(this.asset);
-      this.success = true;
-      //alert ("Order Created Successfully!")
-    }, error => {
-      this.success = false;
-      alert("Problem creating Order: " + error['error']['message'])
+    // Load up the Orders from backend
+    this.api.assets$.subscribe(currentAssets => {
+      this.assets = new MatTableDataSource(currentAssets);
+      this.cd.markForCheck();
     })
+    this.api.queryAssetsFromStation();
 
   }
 
-/*
+
   // Get the list of registered Stations
   getStations() {
     //create instance of stationList
@@ -83,13 +85,13 @@ export class DashboardComponent implements OnInit {
       }
   
       console.log("List of Stations: ");
-      console.log(this.stations);
+      console.log(this.stationList);
     }, error => {
       console.log(JSON.stringify(error));
       alert("Problem getting list of stations: " + error['error']['message']);
     });
   }
-
+/*
   
   getAssetFromStation(stationid) {
     this.api.id = stationid;

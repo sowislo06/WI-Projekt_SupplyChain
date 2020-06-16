@@ -1,3 +1,34 @@
+<h3>Order Form</h3>
+<div style="display: table-cell; width: 100vw">
+  <div class="formstyle">
+
+    <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+
+      <label style="text-align:left">
+        Producer ID:
+        <select class="form-control" formControlName="stationid" id="stationid">
+          <option *ngFor="let station of stationList; let i = index" [value]="stationList[i].stationId">
+            {{stationList[i].name}}
+          </option>
+        </select> 
+      </label>
+
+      <input type="submit" style="width:100%" value="Create Order" class="form-button">
+
+    </form>
+    <div *ngIf="submitted" class="results">
+        <p *ngIf="success; else elseBlock">Order Created Successfully!</p>
+        <ng-template #elseBlock></ng-template>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
 <section id="assets-table">
   <div class="table-div">
     <mat-form-field class="mat-form-field ng-tns-c26-530 mat-primary mat-form-field-type-mat-input mat-form-field-appearance-legacy mat-form-field-can-float mat-form-field-has-label mat-form-field-hide-placeholder">

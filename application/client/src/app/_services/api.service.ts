@@ -194,6 +194,13 @@ export class ApiService {
   queryAssetsFromStation() {
     let headers = new HttpHeaders();
     headers = this.createUserAuthorizationHeader(headers);
-    return this.httpClient.get(this.baseUrl + '/api/assets-station/' + this.body, {headers:headers})
+    this.httpClient.get<any[]>(this.baseUrl + '/api/assets-station/' + this.id, {headers:headers}).subscribe (assets => {
+      console.log (assets);
+
+      this.AssetsData.next(assets);
+    }, error => {
+      console.log(JSON.stringify(error));
+      alert("Problem getting assets: " + error['error']['message']);
+    })
   }
 }
