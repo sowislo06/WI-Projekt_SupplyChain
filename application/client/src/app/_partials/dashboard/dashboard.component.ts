@@ -11,10 +11,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class DashboardComponent implements OnInit {
 
-  //stations: MatTableDataSource<Station[]>;
   assets: MatTableDataSource<Asset[]>;
   currentUser: any;
-  //columnsToDisplay = ['orderId', 'productId', 'price', 'quantity', 'producerId', 'retailerId', 'status', 'trackingInfo'];
   columnsToDisplay = ['assetId', 'name', 'stationId'];
   stationList: any[];
   assetList: any[];
@@ -31,17 +29,20 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.user.getCurrentUser();
-    //console.log("currentUser: "+this.currentUser);
+    console.log("currentUser: " + this.currentUser);
     this.regulator = this.regulator !== undefined;
-    //console.log(`Regulator Boolean attribute is ${this.regulator ? '' : 'non-'}present!`);
+    console.log(`Regulator Boolean attribute is ${this.regulator ? '' : 'non-'}present!`);
 
+    //Speichert alle Stations in ein Observerble-Objekt
     this.getStations();
 
+    //Validiert die MessageForm
     this.messageForm = this.formBuilder.group({
       stationid: ['', Validators.required]
     });
 
-    // Load up the Orders from backend
+    //Dieses Konstrukt lädt alle Assets aus der Blockchain
+    //Mithilfe eines Oberservables
     this.api.assets$.subscribe(currentAssets => {
       this.assets = new MatTableDataSource(currentAssets);
       this.cd.markForCheck();
@@ -49,17 +50,21 @@ export class DashboardComponent implements OnInit {
     this.api.queryAllAssets();
   }
 
+  //Die Methode wird aufgerufen, sobals der Submit-Button gedrückt wurde
   onSubmit() {
     this.submitted = true;
 
+    //Prüft, ob valide Werte in der MessageForm sind
     if (this.messageForm.invalid) {
       return;
     }
 
+    //Schreibt den Wert aus den MessageForm auf eine globale Variable
     this.api.id = this.messageForm.controls.stationid.value;
     
 
-    // Load up the Orders from backend
+    //Dieses Konstrukt lädt alle Assets aus der Blockchain
+    //Mithilfe eines Oberservables
     this.api.assets$.subscribe(currentAssets => {
       this.assets = new MatTableDataSource(currentAssets);
       this.cd.markForCheck();
@@ -91,43 +96,11 @@ export class DashboardComponent implements OnInit {
       alert("Problem getting list of stations: " + error['error']['message']);
     });
   }
-/*
-  
-  getAssetFromStation(stationid) {
-    this.api.id = stationid;
-
-
-    //create instance of stationList
-    this.assetList = [];
-    //get all stations from the Blockchain
-    this.api.queryAssetsFromStation().subscribe(allAssets => {
-      var assetArray = Object.keys(allAssets).map(function (assetIndex) {
-        let asset = allAssets[assetIndex];
-        return asset;
-      });
-    
-      for (let u of assetArray) {
-        this.assetList.push(u);
-      }
-  
-      console.log("List of Stations: ");
-      console.log(this.assets);
-    }, error => {
-      console.log(JSON.stringify(error));
-      alert("Problem getting list of stations: " + error['error']['message']);
-    });
-  }
-
-*/
-
 }
+
 export interface Asset {
   assetId: string;
   name: string;
   stationId: string
 }
-/*export interface Station {
-  stationId: string;
-  name: string;
-}*/
 
