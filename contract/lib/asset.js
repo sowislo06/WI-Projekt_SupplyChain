@@ -22,7 +22,7 @@ class Asset extends State {
     Definition:  Class Asset:
       {String}  assetId
       {String} name
-      {Station} station
+      {String} stationId
     */
 
     /**

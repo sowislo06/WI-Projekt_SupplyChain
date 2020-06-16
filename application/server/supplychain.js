@@ -334,6 +334,20 @@ supplychainRouter.route('/assets/:id').get(function (request, response) {
         });
 });
 
+supplychainRouter.route('/assets').get(function (request, response) {
+    submitTx(request, 'queryAllAssets', '')
+        .then((queryAssetResponse) => {
+            //  response is already a string;  not a buffer
+            let assets = queryAssetResponse;
+            response.status(STATUS_SUCCESS);
+            response.send(assets);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
+                "There was a problem getting the list of assets."));
+        });
+});  //  process route stations/
+
 supplychainRouter.route('/assets').post(function (request, response) {
     submitTx(request, 'createAsset', JSON.stringify(request.body))
         .then((result) => {

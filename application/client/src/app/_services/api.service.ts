@@ -19,6 +19,9 @@ export class ApiService {
   private StationsData = new BehaviorSubject([]);
   stations$: Observable<any[]> = this.StationsData.asObservable();
 
+  private AssetsData = new BehaviorSubject([]);
+  assets$: Observable<any[]> = this.AssetsData.asObservable();
+
   statuses = {
     1: "ORDER_CREATED",
     2: "ORDER_RECEIVED",
@@ -53,6 +56,16 @@ export class ApiService {
     // replace with this line to pass in the current user vs admin
     //headers = this.createUserAuthorizationHeader(headers);
     return this.httpClient.get(this.baseUrl + '/api/users/', {headers:headers});
+  }
+
+  getAllStations() {
+    let headers = new HttpHeaders();
+    //
+    //  NOTE: an admin identity is needed to invoke this API since it calls the CA methods. 
+    headers = headers.append('Authorization', 'Basic ' + btoa('admin:adminpw')); 
+    // replace with this line to pass in the current user vs admin
+    //headers = this.createUserAuthorizationHeader(headers);
+    return this.httpClient.get(this.baseUrl + '/api/stations/', {headers:headers});
   }
 
   // This API is used during login to get the details of specific user trying to log in
@@ -113,6 +126,19 @@ export class ApiService {
     })
   }
 
+  queryAllAssets() {
+    let headers = new HttpHeaders();
+    headers = this.createUserAuthorizationHeader(headers);
+    this.httpClient.get<any[]>(this.baseUrl + '/api/assets/', {headers:headers}).subscribe (assets => {
+      console.log (assets);
+
+      this.AssetsData.next(assets);
+    }, error => {
+      console.log(JSON.stringify(error));
+      alert("Problem getting assets: " + error['error']['message']);
+    })
+  }
+
   clearOrders(){
     this.OrdersData.next([]);
   }
@@ -163,5 +189,11 @@ export class ApiService {
     let headers = new HttpHeaders();
     headers = this.createUserAuthorizationHeader(headers);
     return this.httpClient.put(this.baseUrl + '/api/receive-shipment/' + this.id, {}, {headers:headers})
+  }
+
+  queryAssetsFromStation() {
+    let headers = new HttpHeaders();
+    headers = this.createUserAuthorizationHeader(headers);
+    return this.httpClient.get(this.baseUrl + '/api/assets-station/' + this.body, {headers:headers})
   }
 }

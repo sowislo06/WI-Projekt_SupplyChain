@@ -784,8 +784,8 @@ class SupplychainContract extends Contract {
      * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/stations/"  
     */
     async queryAllStations(ctx) {
-        const startKey = 'station-';
-        const endKey = '';
+        const startKey = 'station-0000';
+        const endKey = 'station-ZZZZ';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
@@ -905,20 +905,20 @@ class SupplychainContract extends Contract {
         if (stationId.length < 1) {
             throw new Error('stationId is required as input')
         }
-        var stationAsBytes = await ctx.stub.getState(stationId);
+        /*var stationAsBytes = await ctx.stub.getState(stationId);
         if (!stationAsBytes || stationAsBytes.length === 0) {
             throw new Error(`Error Message from queryStation: Station with stationId = ${stationId} does not exist.`);
         }
         var station = Station.deserialize(stationAsBytes);
-
+*/
 
 
         // Create a new Asset object
         let asset = Asset.createInstance(assetId);
         asset.assetId = asset_details.assetId;
         asset.name = asset_details.name;
-        asset.station = station;
-
+        //asset.station = station;
+        asset.stationId = asset_details.stationId;
 
         // Update ledger
         await ctx.stub.putState(assetId, asset.toBuffer());
@@ -1078,6 +1078,50 @@ class SupplychainContract extends Contract {
         await ctx.stub.deleteState(assetId); //remove the order from chaincode state
     }
 
+    /**
+     * queryAllStations
+     * 
+     * @param {Context} ctx the transaction context
+     * 
+     * Usage:  queryAllOrders ()
+     * 
+     * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/stations/"  
+    */
+    async queryAllAssets(ctx) {
+        const startKey = 'asset-0000';
+        const endKey = 'asset-ZZZZ';
+
+        const iterator = await ctx.stub.getStateByRange(startKey, endKey);
+
+        const allResults = [];
+        while (true) {
+            const res = await iterator.next();
+
+            if (res.value && res.value.value.toString()) {
+
+                console.log(res.value.value.toString('utf8'));
+
+                const Key = res.value.key;
+                let Record;
+                try {
+                    Record = JSON.parse(res.value.value.toString('utf8'));
+                } catch (err) {
+                    console.log(err);
+                    Record = res.value.value.toString('utf8');
+                }
+            
+                allResults.push(Record);
+            
+            }
+            if (res.done) {
+                console.log('end of data');
+                await iterator.close();
+                console.info(allResults);
+                return allResults;
+            }
+
+        }
+    }
 
 
     //---------- ACTIVITY -----------------
@@ -1246,8 +1290,8 @@ class SupplychainContract extends Contract {
      * curl -X GET -H "authorization: Basic YWRtaW46YWRtaW5wdw==" "http://localhost:3000/api/activities/"
     */
     async queryAllActivities(ctx) {
-        const startKey = 'activity-';
-        const endKey = '';
+        const startKey = 'activity-0000';
+        const endKey = 'activity-ZZZZ';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
