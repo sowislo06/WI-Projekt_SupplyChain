@@ -57,6 +57,12 @@ export class ApiService {
     return this.httpClient.post(this.baseUrl + '/api/assets', this.body, {headers:headers})
   }
 
+  createActivity() {
+    let headers = new HttpHeaders();
+    headers = this.createUserAuthorizationHeader(headers);
+    return this.httpClient.post(this.baseUrl + '/api/activities', this.body, {headers:headers})
+  }
+
   
 
   //  This API is used:
@@ -90,6 +96,16 @@ export class ApiService {
     // replace with this line to pass in the current user vs admin
     //headers = this.createUserAuthorizationHeader(headers);
     return this.httpClient.get(this.baseUrl + '/api/assets/', {headers:headers});
+  }
+
+  getAllActivities() {
+    let headers = new HttpHeaders();
+    //
+    //  NOTE: an admin identity is needed to invoke this API since it calls the CA methods. 
+    headers = headers.append('Authorization', 'Basic ' + btoa('admin:adminpw')); 
+    // replace with this line to pass in the current user vs admin
+    //headers = this.createUserAuthorizationHeader(headers);
+    return this.httpClient.get(this.baseUrl + '/api/activities/', {headers:headers});
   }
 
   // This API is used during login to get the details of specific user trying to log in

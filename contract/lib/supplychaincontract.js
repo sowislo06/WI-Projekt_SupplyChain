@@ -1200,8 +1200,8 @@ class SupplychainContract extends Contract {
         // Create a new Activity object
         let activity = Activity.createInstance(activityId);
         activity.activityId = activity_details.activityId;
-        activity.asset = asset;
-        activity.station = station;
+        activity.assetId = assetId;
+        activity.stationId = stationId;
         activity.startDate = now;
         activity.user = userType;
 

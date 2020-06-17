@@ -27,11 +27,13 @@ import { ToShipperDialog } from './_partials/orders-table/orders-table.component
 import { DeleteOrderDialog } from './_partials/orders-table/orders-table.component';
 import { DashboardComponent } from './_partials/dashboard/dashboard.component';
 import { CreateStationComponent } from './_partials/create-station/create-station.component';
+import { CreateActivityComponent } from './_partials/create-activity/create-activity.component';
 
 /* Services */
 import { ApiService, AuthService, UserService } from './_services/index';
 import { AuthGuard } from './_guards/auth.guard';
 import { CreateAssetComponent } from './_partials/create-asset/create-asset.component';
+
 
 
 
@@ -55,7 +57,8 @@ import { CreateAssetComponent } from './_partials/create-asset/create-asset.comp
     DeleteOrderDialog,
     DashboardComponent,
     CreateStationComponent,
-    CreateAssetComponent
+    CreateAssetComponent,
+    CreateActivityComponent
   ],
   imports: [
     BrowserModule,
