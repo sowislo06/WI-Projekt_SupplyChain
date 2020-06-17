@@ -865,6 +865,7 @@ class SupplychainContract extends Contract {
     /**
      * createAsset
      *
+     * 
      * @param {Context} ctx the transaction context
      * @param {String} assetId
      * @param {String} name
