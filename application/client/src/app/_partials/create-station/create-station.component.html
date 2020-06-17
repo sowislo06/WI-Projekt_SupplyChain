@@ -1,0 +1,22 @@
+<h3>Create Station</h3>
+<div style="display: table-cell; width: 100vw">
+  <div class="formstyle">
+
+    <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+
+      <label style="text-align:left">
+        Name:
+        <input type="text" formControlName="stationName">
+      </label>
+
+
+
+      <input type="submit" style="width:100%" value="Create Station" class="form-button">
+
+    </form>
+
+    <div *ngIf="submitted" class="results">
+        <p *ngIf="success; else elseBlock">Station Created Successfully!</p>
+        <ng-template #elseBlock></ng-template>
+      </div>
+  </div>
