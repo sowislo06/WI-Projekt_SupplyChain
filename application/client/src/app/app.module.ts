@@ -26,6 +26,7 @@ import { OrdersTableComponent } from './_partials/orders-table/orders-table.comp
 import { ToShipperDialog } from './_partials/orders-table/orders-table.component';
 import { DeleteOrderDialog } from './_partials/orders-table/orders-table.component';
 import { DashboardComponent } from './_partials/dashboard/dashboard.component';
+import { StatisticsComponent } from './_partials/statistics/statistics.component';
 import { CreateStationComponent } from './_partials/create-station/create-station.component';
 import { CreateActivityComponent } from './_partials/create-activity/create-activity.component';
 
@@ -33,6 +34,7 @@ import { CreateActivityComponent } from './_partials/create-activity/create-acti
 import { ApiService, AuthService, UserService } from './_services/index';
 import { AuthGuard } from './_guards/auth.guard';
 import { CreateAssetComponent } from './_partials/create-asset/create-asset.component';
+
 
 
 
@@ -58,7 +60,8 @@ import { CreateAssetComponent } from './_partials/create-asset/create-asset.comp
     DashboardComponent,
     CreateStationComponent,
     CreateAssetComponent,
-    CreateActivityComponent
+    CreateActivityComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,
