@@ -1137,7 +1137,7 @@ class SupplychainContract extends Contract {
         * @param {String} stationId
         * 
         * Usage: submitTransaction ('createAsset', 'Asset001', 'Fifa 2020', 'Station001')
-        * Usage: [{"activityId":"Activity001","name":"Umlagerung","assetId":"Asset001","stationId":"Station001"}]
+        * Usage: [{"activityId":"activity-279","name":"Umlagerung","assetId":"asset-1904","stationId":"station-0727"}]
         * 
         * Usage: [{"stationId":"Station001","name":"Wareneingang"}]
         * 
@@ -1201,8 +1201,11 @@ class SupplychainContract extends Contract {
         // Create a new Activity object
         let activity = Activity.createInstance(activityId);
         activity.activityId = activity_details.activityId;
+        //Wird genutzt, um einen einzigartigen Vergleich herstellen zu können
         activity.assetId = assetId;
-        activity.stationId = stationId;
+        //Wird genutzt, um den Namen des Assets anzeigen zu können
+        activity.assetName = asset.name
+        activity.stationId = station.name;
         activity.startDate = now;
         activity.user = userType;
 

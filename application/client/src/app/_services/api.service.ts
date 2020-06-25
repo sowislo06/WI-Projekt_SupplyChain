@@ -22,6 +22,9 @@ export class ApiService {
   private AssetsData = new BehaviorSubject([]);
   assets$: Observable<any[]> = this.AssetsData.asObservable();
 
+  private ActivitiesData = new BehaviorSubject([]);
+  activities$: Observable<any[]> = this.ActivitiesData.asObservable();
+
   statuses = {
     1: "ORDER_CREATED",
     2: "ORDER_RECEIVED",
@@ -179,6 +182,19 @@ export class ApiService {
     })
   }
 
+  queryAllActivities() {
+    let headers = new HttpHeaders();
+    headers = this.createUserAuthorizationHeader(headers);
+    this.httpClient.get<any[]>(this.baseUrl + '/api/activities/', {headers:headers}).subscribe (activities => {
+      console.log (activities);
+
+      this.ActivitiesData.next(activities);
+    }, error => {
+      console.log(JSON.stringify(error));
+      alert("Problem getting activities: " + error['error']['message']);
+    })
+  }
+
   clearOrders(){
     this.OrdersData.next([]);
   }
@@ -241,6 +257,19 @@ export class ApiService {
     }, error => {
       console.log(JSON.stringify(error));
       alert("Problem getting assets: " + error['error']['message']);
+    })
+  }
+  
+  queryActivityFromAsset() {
+    let headers = new HttpHeaders();
+    headers = this.createUserAuthorizationHeader(headers);
+    this.httpClient.get<any[]>(this.baseUrl + '/api/activities-asset/' + this.id, {headers:headers}).subscribe (activities => {
+      console.log (activities);
+
+      this.ActivitiesData.next(activities);
+    }, error => {
+      console.log(JSON.stringify(error));
+      alert("Problem getting activities: " + error['error']['message']);
     })
   }
 }

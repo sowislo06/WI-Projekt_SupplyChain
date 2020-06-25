@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
     this.regulator = this.regulator !== undefined;
     console.log(`Regulator Boolean attribute is ${this.regulator ? '' : 'non-'}present!`);
 
-    //Speichert alle Stations in ein Observerble-Objekt
+    //Holt alle Stations und speichert diese in das Array
     this.getStations();
 
     //Validiert die MessageForm
@@ -70,7 +70,6 @@ export class DashboardComponent implements OnInit {
       this.cd.markForCheck();
     })
     this.api.queryAssetsFromStation();
-
   }
 
 

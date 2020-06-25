@@ -1,3 +1,52 @@
-<p>
-  statistics works!
-</p>
+
+<div style="display: table-cell; width: 100vw">
+  <div class="formstyle">
+
+    <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+
+      <label style="text-align:left">
+        Station:
+        <select class="form-control" formControlName="assetid" id="assetid">
+          <option *ngFor="let asset of assetList; let i = index" [value]="assetList[i].assetId">
+            {{assetList[i].name}}
+          </option>
+        </select> 
+      </label>
+
+      <input type="submit" style="width:100%" value="Assets anzeigen" class="form-button">
+
+    </form>
+    <div *ngIf="submitted" class="results">
+        <p *ngIf="success; else elseBlock">Order Created Successfully!</p>
+        <ng-template #elseBlock></ng-template>
+      </div>
+  </div>
+</div>
+
+
+
+<section id="assets-table">
+  <div class="table-div">
+    <mat-form-field class="mat-form-field ng-tns-c26-530 mat-primary mat-form-field-type-mat-input mat-form-field-appearance-legacy mat-form-field-can-float mat-form-field-has-label mat-form-field-hide-placeholder">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+    <table mat-table
+       [dataSource]="activities" multiTemplateDataRows
+       class="mat-elevation-z8">
+      <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
+        <td mat-cell *matCellDef="let element">
+          <span> {{ element[column] }}</span>
+          <!-- <span *ngIf="column=='action'">
+            <mat-icon aria-hidden="false" aria-label="delete icon" (click)="deleteOrder(element.orderId)">delete</mat-icon>
+          </span> -->
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+          class="example-element-row">
+      </tr>
+    </table>
+  </div>
+</section>
