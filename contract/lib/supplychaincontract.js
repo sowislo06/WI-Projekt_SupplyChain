@@ -669,7 +669,7 @@ class SupplychainContract extends Contract {
      * @param {String} name
      * 
      * Usage: submitTransaction ('createStation', 'Station001', 'Wareneingang')
-     * Usage: [{"stationId":"station-002","name":"Qualitätsicherung"}]
+     * Usage: [{"stationId":"station-001","name":"Qualitätsicherung"}]
      * 
      * curl -X POST -H "authorization: Basic SEVCOkhFQg==" -H "Content-Type: application/json" -d "{\"stationId\":\"Station020\",\"name\":\"Qualitätssicherung\"}" "http://localhost:3000/api/stations/"
     */
@@ -1137,7 +1137,7 @@ class SupplychainContract extends Contract {
         * @param {String} stationId
         * 
         * Usage: submitTransaction ('createAsset', 'Asset001', 'Fifa 2020', 'Station001')
-        * Usage: [{"activityId":"activity-279","name":"Umlagerung","assetId":"asset-1904","stationId":"station-0727"}]
+        * Usage: [{"activityId":"activity-219","name":"Umlagerung","assetId":"asset-299c","stationId":"station-002"}]
         * 
         * Usage: [{"stationId":"Station001","name":"Wareneingang"}]
         * 
