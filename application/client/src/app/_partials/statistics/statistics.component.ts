@@ -20,7 +20,10 @@ export class StatisticsComponent implements OnInit {
   columnsToDisplayII = ['startDate'];
   messageForm: FormGroup;
   submitted = false;
+  //Globale Statistik-Variablen
   diff;
+  start;
+  isLoading = true;
 
   constructor(private api: ApiService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) { }
 
@@ -70,7 +73,7 @@ export class StatisticsComponent implements OnInit {
     this.api.queryActivityFromAsset();
 
 
-    this.getTimeDuration();
+    this.getStatistics();
   }
 
   // Get the list of registered Assets
@@ -96,7 +99,7 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-  getTimeDuration() {
+  getStatistics() {
 
     //create instance of activityList
     this.activityList = [];
@@ -112,14 +115,27 @@ export class StatisticsComponent implements OnInit {
       for (let u of activityArray) {
         this.activityList.push(u);
       }
-
-      //Lagerdauer
+     
+     
       length = this.activityList.length;
+      
+      //Lagerdauer
       if(length > 0){
         var d1 = new Date(this.activityList[length-1].startDate) //Die neueste Aktivität
         var d2 = new Date(this.activityList[0].startDate)  //Die äteste Aktivität
         this.diff = dhm(Math.abs(<any>d1-<any>d2));
+      } else {
+        //TODO
       }
+
+      //Stardatum
+      if(length > 0){
+        this.start = this.activityList[0].startDate;
+      } else {
+        //TODO
+      }
+      //Toggle; Daten werden erst angezeigt, wenn sie vollständig geladen sind.
+      this.isLoading = false;
     })
 
     //Hilfsfunktion, die von Millisekunden in Tage:Stunden:Sekunden umrechnet

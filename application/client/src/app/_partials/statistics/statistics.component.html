@@ -5,7 +5,7 @@
     <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
 
       <label style="text-align:left">
-        Station:
+        Asset:
         <select class="form-control" formControlName="assetid" id="assetid">
           <option *ngFor="let asset of assetList; let i = index" [value]="assetList[i].assetId">
             {{assetList[i].name}}
@@ -13,13 +13,13 @@
         </select> 
       </label>
 
-      <input type="submit" style="width:100%" value="Assets anzeigen" class="form-button">
+      <input type="submit" style="width:100%" value="Supply Chain anzeigen" class="form-button">
 
     </form>
     <div *ngIf="submitted" class="results">
-        <p *ngIf="success; else elseBlock">Order Created Successfully!</p>
+        <p *ngIf="success; else elseBlock">Transaktion erfolgreich!</p>
         <ng-template #elseBlock></ng-template>
-      </div>
+    </div>
   </div>
 </div>
 
@@ -51,5 +51,12 @@
 </section>
 
 
-<h1>Statistiken</h1>
-<h2>Lagerdauer: {{diff}} Tage</h2>
+
+<div *ngIf="!isLoading">
+  <div *ngIf="submitted" class="results">
+    <h1>Statistiken</h1>
+    <h2>Lagerdauer: {{diff}} Tage</h2>
+    <h2>Startdatum: {{start}}</h2>
+  </div>
+</div>
+
