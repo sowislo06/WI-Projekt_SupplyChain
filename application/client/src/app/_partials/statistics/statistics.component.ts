@@ -17,13 +17,16 @@ export class StatisticsComponent implements OnInit {
   activityList: any[];
   activities: MatTableDataSource<Activity[]>;
   columnsToDisplay = ['activityId', 'stationId', 'assetName', 'startDate', 'user'];
-  columnsToDisplayII = ['startDate'];
   messageForm: FormGroup;
   submitted = false;
+  
   //Globale Statistik-Variablen
   diff;
   start;
+  avg;
   isLoading = true;
+
+
 
   constructor(private api: ApiService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) { }
 
@@ -123,17 +126,23 @@ export class StatisticsComponent implements OnInit {
       if(length > 0){
         var d1 = new Date(this.activityList[length-1].startDate) //Die neueste Aktivität
         var d2 = new Date(this.activityList[0].startDate)  //Die äteste Aktivität
-        this.diff = dhm(Math.abs(<any>d1-<any>d2));
+        this.diff = dhm(Math.abs(<any>d1-<any>d2)) + " Tage";
       } else {
-        //TODO
+        this.diff = "Zu wenige Daten...";
       }
 
       //Stardatum
-      if(length > 0){
+      if(length >= 0){
         this.start = this.activityList[0].startDate;
       } else {
-        //TODO
+        this.diff = "Zu wenige Daten...";
       }
+
+      //Durchschnittliche Dauer pro Lager
+      if(length > 0) {
+        this.avg = dhm(Math.abs(<any>d1-<any>d2) / length);
+      }
+
       //Toggle; Daten werden erst angezeigt, wenn sie vollständig geladen sind.
       this.isLoading = false;
     })
