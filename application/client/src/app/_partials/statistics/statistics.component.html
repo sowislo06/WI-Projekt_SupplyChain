@@ -42,7 +42,6 @@
           </span> -->
         </td>
       </ng-container>
-
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
       <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
           class="example-element-row">
@@ -50,3 +49,7 @@
     </table>
   </div>
 </section>
+
+
+<h1>Statistiken</h1>
+<h2>Lagerdauer: {{diff}} Tage</h2>

@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ExecSyncOptionsWithBufferEncoding } from 'child_process';
 import { MatTableDataSource } from '@angular/material/table';
 
+
 @Component({
   selector: 'statistics',
   templateUrl: './statistics.component.html',
@@ -13,10 +14,13 @@ import { MatTableDataSource } from '@angular/material/table';
 export class StatisticsComponent implements OnInit {
 
   assetList: any[];
+  activityList: any[];
   activities: MatTableDataSource<Activity[]>;
   columnsToDisplay = ['activityId', 'stationId', 'assetName', 'startDate', 'user'];
+  columnsToDisplayII = ['startDate'];
   messageForm: FormGroup;
   submitted = false;
+  diff;
 
   constructor(private api: ApiService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) { }
 
@@ -58,9 +62,15 @@ export class StatisticsComponent implements OnInit {
     //Mithilfe eines Oberservables
     this.api.activities$.subscribe(currentActivities => {
       this.activities = new MatTableDataSource(currentActivities);
+      
+      this.activities.sort;
       this.cd.markForCheck();
+
     })
     this.api.queryActivityFromAsset();
+
+
+    this.getTimeDuration();
   }
 
   // Get the list of registered Assets
@@ -78,7 +88,7 @@ export class StatisticsComponent implements OnInit {
         this.assetList.push(u);
       }
   
-      console.log("List of Assets: ");
+      console.log("List of Assets CREATE: " + this.assetList.length);
       console.log(this.assetList);
     }, error => {
       console.log(JSON.stringify(error));
@@ -86,6 +96,53 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  getTimeDuration() {
+
+    //create instance of activityList
+    this.activityList = [];
+
+    //Lädt alle Acitivities von einem Asset in ein Array
+    //Berechnungen: Lagerdauer, 
+    this.api.getActivityFromAsset().subscribe(currentActivities => {
+      var activityArray = Object.keys(currentActivities).map(function (activityIndex) {
+        let activity = currentActivities[activityIndex];
+        return activity;
+      });
+    
+      for (let u of activityArray) {
+        this.activityList.push(u);
+      }
+
+      //Lagerdauer
+      length = this.activityList.length;
+      if(length > 0){
+        var d1 = new Date(this.activityList[length-1].startDate) //Die neueste Aktivität
+        var d2 = new Date(this.activityList[0].startDate)  //Die äteste Aktivität
+        this.diff = dhm(Math.abs(<any>d1-<any>d2));
+      }
+    })
+
+    //Hilfsfunktion, die von Millisekunden in Tage:Stunden:Sekunden umrechnet
+    function dhm(t){
+      var cd = 24 * 60 * 60 * 1000,
+          ch = 60 * 60 * 1000,
+          d = Math.floor(t / cd),
+          h = Math.floor( (t - d * cd) / ch),
+          m = Math.round( (t - d * cd - h * ch) / 60000),
+          pad = function(n){ return n < 10 ? '0' + n : n; };
+      if( m === 60 ){
+        h++;
+        m = 0;
+      }
+      if( h === 24 ){
+        d++;
+        h = 0;
+      }
+      return [d, pad(h), pad(m)].join(':');
+    }
+    
+    console.log( dhm( 3 * 24 * 60 * 60 * 1000 ) );
+  }
 }
 
 export interface Activity {

@@ -260,6 +260,7 @@ export class ApiService {
     })
   }
   
+  //Zur Füllung eines dynamischen Observables
   queryActivityFromAsset() {
     let headers = new HttpHeaders();
     headers = this.createUserAuthorizationHeader(headers);
@@ -271,5 +272,13 @@ export class ApiService {
       console.log(JSON.stringify(error));
       alert("Problem getting activities: " + error['error']['message']);
     })
+  }
+
+  //Zur Füllung des Arrays
+  getActivityFromAsset() {
+    let headers = new HttpHeaders();
+    headers = this.createUserAuthorizationHeader(headers);
+
+    return this.httpClient.get(this.baseUrl + '/api/activities-asset/' + this.id, {headers:headers});
   }
 }

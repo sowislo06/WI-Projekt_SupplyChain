@@ -1137,7 +1137,7 @@ class SupplychainContract extends Contract {
         * @param {String} stationId
         * 
         * Usage: submitTransaction ('createAsset', 'Asset001', 'Fifa 2020', 'Station001')
-        * Usage: [{"activityId":"activity-219","name":"Umlagerung","assetId":"asset-299c","stationId":"station-002"}]
+        * Usage: [{"activityId":"activity-219","name":"Umlagerung","assetId":"asset-299c","stationId":"station-22b1"}]
         * 
         * Usage: [{"stationId":"Station001","name":"Wareneingang"}]
         * 
