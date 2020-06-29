@@ -19,4 +19,7 @@
     ```
     $ chmod +x testcase.sh
     $ ./testcase.sh
+
+- enroll_assets.sh TODO
+- enroll_stations.sh TODO
     ```
