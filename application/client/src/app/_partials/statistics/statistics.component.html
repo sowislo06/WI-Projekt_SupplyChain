@@ -6,8 +6,6 @@
 
       <label style="text-align:left">
         Asset:
-        {{temp}}
-        Bal
         <select class="form-control" formControlName="assetid" id="assetid">
           <option *ngFor="let asset of assetList; let i = index" [value]="assetList[i].assetId">
             {{assetList[i].name}}
@@ -39,18 +37,25 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
         <td mat-cell *matCellDef="let element">
           <span> {{ element[column] }}</span>
-          <!-- <span *ngIf="column=='action'">
+          <span *ngIf="column=='action'">
             <mat-icon aria-hidden="false" aria-label="delete icon" (click)="deleteOrder(element.orderId)">delete</mat-icon>
-          </span> -->
+          </span> 
         </td>
       </ng-container>
+
+
+
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
       <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
-          class="example-element-row">
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
       </tr>
     </table>
   </div>
 </section>
+
+
 
 <button ion-button  (click)="showPdf()">Save</button>
 
