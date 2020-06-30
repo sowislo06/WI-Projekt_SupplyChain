@@ -6,6 +6,8 @@
 
       <label style="text-align:left">
         Asset:
+        {{temp}}
+        Bal
         <select class="form-control" formControlName="assetid" id="assetid">
           <option *ngFor="let asset of assetList; let i = index" [value]="assetList[i].assetId">
             {{assetList[i].name}}
@@ -50,6 +52,14 @@
   </div>
 </section>
 
+<button ion-button  (click)="showPdf()">Save</button>
+
+<div class="form-group">
+  <label for="file">Choose File</label>
+  <input type="file"
+         id="file"
+         (change)="handleFileInput($event.target.files)">
+</div>
 
 
 <div *ngIf="!isLoading">

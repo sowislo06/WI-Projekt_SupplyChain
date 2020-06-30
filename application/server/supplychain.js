@@ -404,7 +404,7 @@ supplychainRouter.route('/activities').post(function (request, response) {
             // process response
             console.log('\nProcess createActivity transaction.');
             let activity = Activity.fromBuffer(result);
-            console.log(`asset ${activity.activityId} : name = ${activity.name} : asset = ${activity.station} : station = ${activity.station} : startDate = ${activity.startDate} : endDate = ${activity.endDate} : user = ${activity.user}`);
+            console.log(`asset ${activity.activityId} : name = ${activity.name} : asset = ${activity.station} : station = ${activity.station} : startDate = ${activity.startDate} : endDate = ${activity.endDate} : user = ${activity.user} : document = ${activity.document}`);
             response.status(STATUS_SUCCESS);
             response.send(activity);
         }, (error) => {

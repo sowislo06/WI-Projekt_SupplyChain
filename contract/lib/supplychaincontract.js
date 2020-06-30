@@ -1137,7 +1137,7 @@ class SupplychainContract extends Contract {
         * @param {String} stationId
         * 
         * Usage: submitTransaction ('createAsset', 'Asset001', 'Fifa 2020', 'Station001')
-        * Usage: [{"activityId":"activity-219","name":"Umlagerung","assetId":"asset-299c","stationId":"station-22b1"}]
+        * Usage: [{"activityId":"activity-2342","name":"Umlagerung","assetId":"asset-36bc","stationId":"station-22b1","document":"sdsdsd"}]
         * 
         * Usage: [{"stationId":"Station001","name":"Wareneingang"}]
         * 
@@ -1161,6 +1161,7 @@ class SupplychainContract extends Contract {
         const name = activity_details.name;
         const assetId = activity_details.assetId;
         const stationId = activity_details.stationId;
+        const document = activity_details.document;
 
         console.log("incoming activity fields: " + JSON.stringify(activity_details));
         
@@ -1208,6 +1209,7 @@ class SupplychainContract extends Contract {
         activity.stationId = station.name;
         activity.startDate = now;
         activity.user = userType;
+        activity.document = document;
 
 
 

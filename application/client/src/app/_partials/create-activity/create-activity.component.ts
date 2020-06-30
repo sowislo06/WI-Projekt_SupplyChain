@@ -21,6 +21,8 @@ export class CreateActivityComponent implements OnInit {
   producers: any[];
   assetList: any[];
   stationList: any[];
+  fileToUpload: File = null;
+  linkSource: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,6 +47,7 @@ export class CreateActivityComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
+
     if (this.messageForm.invalid) {
       return;
     }
@@ -53,7 +56,8 @@ export class CreateActivityComponent implements OnInit {
       activityId: "activity-" + uuid(),
       name: 'Umlagerung',
       stationId: this.messageForm.controls.stationId.value,
-      assetId: this.messageForm.controls.assetId.value
+      assetId: this.messageForm.controls.assetId.value,
+      document: this.linkSource
     }
 
     this.api.createActivity().subscribe(api => {
@@ -111,6 +115,21 @@ export class CreateActivityComponent implements OnInit {
         alert("Problem getting list of stations: " + error['error']['message']);
       });
     }
+  handleFileInput(files: FileList) {
+    //Maximal eine Datei!
+    this.fileToUpload = files.item(0);
+    var reader = new FileReader();
+    reader.readAsDataURL(this.fileToUpload);
+  
+
+    reader.onload = () => {
+      this.linkSource = reader.result as string;
+    };
+
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+  }
 }
 
 

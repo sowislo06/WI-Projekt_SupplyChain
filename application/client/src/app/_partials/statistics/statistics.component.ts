@@ -2,8 +2,8 @@ import { ApiService, UserService } from '../../_services/index';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, TooltipPosition } from '@angular/material';
 import { Component, Inject, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ExecSyncOptionsWithBufferEncoding } from 'child_process';
 import { MatTableDataSource } from '@angular/material/table';
+
 
 
 @Component({
@@ -26,6 +26,9 @@ export class StatisticsComponent implements OnInit {
   avg;
   isLoading = true;
 
+  
+  temp: string;
+  fileToUpload: File = null;
 
 
   constructor(private api: ApiService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) { }
@@ -48,8 +51,8 @@ export class StatisticsComponent implements OnInit {
       this.cd.markForCheck();
     })
     this.api.queryAllActivities();
-
   }
+
 
   //Die Methode wird aufgerufen, sobals der Submit-Button gedrückt wurde
   onSubmit() {
@@ -77,6 +80,9 @@ export class StatisticsComponent implements OnInit {
 
 
     this.getStatistics();
+
+
+
   }
 
   // Get the list of registered Assets
@@ -167,6 +173,27 @@ export class StatisticsComponent implements OnInit {
     }
     
     console.log( dhm( 3 * 24 * 60 * 60 * 1000 ) );
+  }
+
+  handleFileInput(files: FileList) {
+    //Maximal eine Datei!
+    this.fileToUpload = files.item(0);
+    var reader = new FileReader();
+    reader.readAsDataURL(this.fileToUpload);
+
+    reader.onload = function () {
+      console.log(reader.result.toString())
+      const linkSource = reader.result.toString();
+      const downloadLink = document.createElement("a");
+      const fileName = "sample.pdf";
+
+      downloadLink.href = linkSource;
+      downloadLink.download = fileName;
+      downloadLink.click();
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
   }
 }
 
