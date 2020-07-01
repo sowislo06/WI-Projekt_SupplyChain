@@ -1,8 +1,10 @@
 import { ApiService, UserService } from '../../_services/index';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, TooltipPosition } from '@angular/material';
-import { Component, Inject, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Inject, Input, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
+import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+
+
 
 
 
@@ -19,7 +21,10 @@ export class StatisticsComponent implements OnInit {
   columnsToDisplay = ['activityId', 'stationId', 'assetName', 'startDate', 'user', 'document'];
   messageForm: FormGroup;
   submitted = false;
-  
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
   //Globale Statistik-Variablen
   diff;
   start;
@@ -48,6 +53,8 @@ export class StatisticsComponent implements OnInit {
     //Mithilfe eines Oberservables
     this.api.activities$.subscribe(currentActivities => {
       this.activities = new MatTableDataSource(currentActivities);
+      this.activities.paginator = this.paginator;
+      this.activities.sort = this.sort;
       this.cd.markForCheck();
     })
     this.api.queryAllActivities();
@@ -80,9 +87,12 @@ export class StatisticsComponent implements OnInit {
 
 
     this.getStatistics();
+  }
 
-
-
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.activities.filter = filterValue;
   }
 
   // Get the list of registered Assets
@@ -198,7 +208,7 @@ export class StatisticsComponent implements OnInit {
 
   showPdf(file: string){
     const downloadLink = document.createElement("a");
-    const fileName = "sample.pdf";
+    const fileName = "document.pdf";
 
     downloadLink.href = file;
     downloadLink.download = fileName;

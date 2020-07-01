@@ -34,12 +34,25 @@
        [dataSource]="activities" multiTemplateDataRows
        class="mat-elevation-z8">
       <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> 
+          <!-- Manuelle Zuweisung, damit in der Tabelle die Namen in schön stehen -->
+          <span *ngIf="column=='activityId'"> Acitivity ID </span>
+          <span *ngIf="column=='stationId'"> Station </span>
+          <span *ngIf="column=='assetName'"> Asset </span>
+          <span *ngIf="column=='startDate'"> Datum </span>
+          <span *ngIf="column=='user'"> Benutzer </span>
+          <span *ngIf="column=='document'"> Dokument </span>
+        </th>
         <td mat-cell *matCellDef="let element">
-          
+          <!--Wenn sich die Spalte auf das Dokument bezieht -->
           <span *ngIf="column=='document' ; else showElement">
+            <!--Wenn Dokument vorhanden-->
             <span *ngIf="element[column]">
               <mat-icon aria-hidden="false" aria-label="Custom checkbox" (click)="showPdf(element.document)">picture_as_pdf</mat-icon>
+            </span>
+             <!--Wenn Dokument NICHT vorhanden-->
+            <span *ngIf="!element[column]">
+              <mat-icon aria-hidden="true" aria-label="Custom checkbox">not_interested</mat-icon>
             </span>
           </span> 
           <ng-template #showElement>
@@ -48,26 +61,25 @@
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
-        class="example-element-row"
-        [class.example-expanded-row]="expandedElement === element"
-        (click)="expandedElement = expandedElement === element ? null : element">
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;">
       </tr>
     </table>
+    <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   </div>
 </section>
 
-
-
-<button ion-button  (click)="showPdf()">Save</button>
-
-<div class="form-group">
-  <label for="file">Choose File</label>
-  <input type="file"
-         id="file"
-         (change)="handleFileInput($event.target.files)">
+<div class="mat-table">
+  <div class="mat-header-row">
+    <div class="mat-header-cell">One</div>
+    <div class="mat-header-cell">Two</div>
+    <div class="mat-header-cell">Three</div>
+  </div>
+  <div class="mat-row">
+    <div class="mat-cell">AAA</div>
+    <div class="mat-cell">BBB</div>
+    <div class="mat-cell">CCC</div>
+  </div>
 </div>
-
 
 <div *ngIf="!isLoading">
   <div *ngIf="submitted" class="results">
@@ -78,3 +90,24 @@
   </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<button ion-button  (click)="showPdf()">Save</button>
+
+<div class="form-group">
+  <label for="file">Choose File</label>
+  <input type="file"
+         id="file"
+         (change)="handleFileInput($event.target.files)">
+</div>
+-->
