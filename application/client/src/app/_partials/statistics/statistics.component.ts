@@ -142,7 +142,7 @@ export class StatisticsComponent implements OnInit {
       if(length > 0){
         var d1 = new Date(this.activityList[length-1].startDate) //Die neueste Aktivität
         var d2 = new Date(this.activityList[0].startDate)  //Die äteste Aktivität
-        this.diff = dhm(Math.abs(<any>d1-<any>d2)) + " Tage";
+        this.diff = dhm(Math.abs(<any>d1-<any>d2));
       } else {
         this.diff = "Zu wenige Daten...";
       }
