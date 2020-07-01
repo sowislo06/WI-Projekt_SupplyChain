@@ -16,7 +16,7 @@ export class StatisticsComponent implements OnInit {
   assetList: any[];
   activityList: any[];
   activities: MatTableDataSource<Activity[]>;
-  columnsToDisplay = ['activityId', 'stationId', 'assetName', 'startDate', 'user'];
+  columnsToDisplay = ['activityId', 'stationId', 'assetName', 'startDate', 'user', 'document'];
   messageForm: FormGroup;
   submitted = false;
   
@@ -194,6 +194,15 @@ export class StatisticsComponent implements OnInit {
     reader.onerror = function (error) {
       console.log('Error: ', error);
     };
+  }
+
+  showPdf(file: string){
+    const downloadLink = document.createElement("a");
+    const fileName = "sample.pdf";
+
+    downloadLink.href = file;
+    downloadLink.download = fileName;
+    downloadLink.click();
   }
 }
 
