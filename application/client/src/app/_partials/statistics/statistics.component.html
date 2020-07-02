@@ -11,18 +11,25 @@
                   </div>
                   <div class="card-body">
                     <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
-                      <label style="text-align:left">                      
-                        <select class="form-control" formControlName="assetid" id="assetid">
-                          <option *ngFor="let asset of assetList; let i = index" [value]="assetList[i].assetId">
-                            {{assetList[i].name}}
-                          </option>
-                        </select> 
-                      </label>
+                      
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-default">Name:</span>
+                        </div>
+                        <label style="text-align:left">                      
+                          <select class="form-control" formControlName="assetid" id="assetid">
+                            <option *ngFor="let asset of assetList; let i = index" [value]="assetList[i].assetId">
+                              {{assetList[i].name}}
+                            </option>
+                          </select> 
+                        </label>
+                      </div>
                       <input type="submit" style="width:100%" value="Supply Chain anzeigen" class="btn btn-dark" >
                     </form>
               </div>
           </div>
       </div>
+
       <!--Liste aller Aktivitäten-->
       <div class="col-md-9">
         <div class="card">

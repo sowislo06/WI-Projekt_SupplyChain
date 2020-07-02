@@ -1,7 +1,7 @@
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiService, UserService } from '../../_services/index';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, TooltipPosition } from '@angular/material';
-import { Component, Inject, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, TooltipPosition, MatPaginator, MatSort } from '@angular/material';
+import { Component, Inject, Input, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -22,6 +22,10 @@ export class DashboardComponent implements OnInit {
   asset: Object;
   submitted = false;
   messageForm: FormGroup;
+
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   @Input('regulator') regulator: boolean;
 
@@ -45,14 +49,24 @@ export class DashboardComponent implements OnInit {
     //Mithilfe eines Oberservables
     this.api.assets$.subscribe(currentAssets => {
       this.assets = new MatTableDataSource(currentAssets);
+      this.assets.paginator = this.paginator;
+      this.assets.sort = this.sort;
       this.cd.markForCheck();
     })
     this.api.queryAllAssets();
   }
 
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.assets.filter = filterValue;
+  }
+
   //Die Methode wird aufgerufen, sobals der Submit-Button gedrückt wurde
   onSubmit() {
     this.submitted = true;
+
+    this.assets.sort;
 
     //Prüft, ob valide Werte in der MessageForm sind
     if (this.messageForm.invalid) {

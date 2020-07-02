@@ -1,38 +1,63 @@
-<h3>Umlagerung</h3>
-<div style="display: table-cell; width: 100vw">
-  <div class="formstyle">
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-6">
+              <div class="card">
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title ">Umlagerung durchführen</h4>
+                  <p class="card-category"> Bitte alle Felder ausfüllen</p>
+                </div>
+                <div class="card-body">
 
-    <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
-
-      <label style="text-align:left">
-        Asset:
-        <select class="form-control" formControlName="assetId" id="assetId">
-          <option *ngFor="let asset of assetList; let i = index" [value]="assetList[i].assetId">
-            {{assetList[i].name}}
-          </option>
-        </select> 
-      </label>
+                  <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
 
 
-      <label style="text-align:left">
-        Station:
-        <select class="form-control" formControlName="stationId" id="stationId">
-          <option *ngFor="let station of stationList; let i = index" [value]="stationList[i].stationId">
-            {{stationList[i].name}}
-          </option>
-        </select> 
-      </label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Asset:</span>
+                      </div>
+                      <select class="form-control" formControlName="assetId" id="assetId">
+                        <option *ngFor="let asset of assetList; let i = index" [value]="assetList[i].assetId">
+                          {{assetList[i].name}}
+                        </option>
+                      </select> 
+                    </div>
 
-      <label for="file" style="text-align:left">Beleg (optional)</label>
-      <input type="file" id="file" (change)="handleFileInput($event.target.files)">
-      
-      <input type="submit" style="width:100%" value="Create Activity" class="form-button">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Station:</span>
+                      </div>
+                      <select class="form-control" formControlName="stationId" id="stationId">
+                        <option *ngFor="let station of stationList; let i = index" [value]="stationList[i].stationId">
+                          {{stationList[i].name}}
+                        </option>
+                      </select> 
+                    </div>
 
-    </form>
-
-    <div *ngIf="submitted" class="results">
-        <p *ngIf="success; else elseBlock">Activity Created Successfully!</p>
-        <ng-template #elseBlock></ng-template>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Upload:</span>
+                      </div>
+                      <div class="custom-file">
+                        <input type="file" id="file" (change)="handleFileInput($event.target.files)">
+                      </div>
+                    </div>
+              
+               
+                    
+                    
+                    <input type="submit" style="width:100%" value="Create Activity" class="btn btn-dark">
+              
+                  </form>
+              
+                  <div *ngIf="submitted" class="results">
+                      <p *ngIf="success; else elseBlock">Activity Created Successfully!</p>
+                      <ng-template #elseBlock></ng-template>
+                </div>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
+</div>
 
