@@ -1,23 +1,35 @@
-<h3>Create Asset</h3>
-<div style="display: table-cell; width: 100vw">
-  <div class="formstyle">
 
-    <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-6">
+              <div class="card">
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title ">Anlegen eines Assers</h4>
+                  <p class="card-category"> Bitte alle Felder ausfüllen</p>
+                </div>
+                <div class="card-body">
 
-      <label style="text-align:left">
-        Name:
-        <input type="text" formControlName="assetName">
-      </label>
+                  <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Name:</span>
+                      </div>
+                      <input type="text" formControlName="assetName" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                    </div>
 
-
-
-      <input type="submit" style="width:100%" value="Create Asset" class="form-button">
-
-    </form>
-
-    <div *ngIf="submitted" class="results">
-        <p *ngIf="success; else elseBlock">Asset Created Successfully!</p>
-        <ng-template #elseBlock></ng-template>
+                    <input type="submit" style="width:100%" value="Create Asset" class="btn btn-dark">
+                  </form>
+              
+                  <div *ngIf="submitted" class="results">
+                      <p *ngIf="success; else elseBlock">Asset Created Successfully!</p>
+                      <ng-template #elseBlock></ng-template>
+                    
+                  </div>
+                </div>
+              </div>
+          </div>
       </div>
   </div>
+</div>
 

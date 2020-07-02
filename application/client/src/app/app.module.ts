@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatCheckboxModule, MatPaginatorModule, MatDialogModule, MatDividerModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule,MatMenuModule,MatProgressBarModule, MatStepperModule,MatTableModule,MatTabsModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
 
 
+
 /* Components */
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -19,6 +20,8 @@ import { RegulatorComponent } from './regulator/regulator.component';
 import { RetailerComponent } from './retailer/retailer.component';
 import { ShipperComponent } from './shipper/shipper.component';
 import { UserManagementComponent } from './user-management/user-management.component';
+
+
 
 /* Partial Components */
 import { OrderFormComponent } from './_partials/order-form/order-form.component';

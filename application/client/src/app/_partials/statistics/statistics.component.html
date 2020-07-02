@@ -1,89 +1,83 @@
-
-<div style="display: table-cell; width: 100vw">
-  <div class="formstyle">
-
-    <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
-
-      <label style="text-align:left">
-        Asset:
-        <select class="form-control" formControlName="assetid" id="assetid">
-          <option *ngFor="let asset of assetList; let i = index" [value]="assetList[i].assetId">
-            {{assetList[i].name}}
-          </option>
-        </select> 
-      </label>
-
-      <input type="submit" style="width:100%" value="Supply Chain anzeigen" class="form-button">
-
-    </form>
-    <div *ngIf="submitted" class="results">
-        <p *ngIf="success; else elseBlock">Transaktion erfolgreich!</p>
-        <ng-template #elseBlock></ng-template>
-    </div>
-  </div>
-</div>
-
 <!-- LISTE ALLER ACTIVITIES -->
 <div class="main-content">
   <div class="container-fluid">
       <div class="row">
-          <div class="col-md-12">
+          <!--Liste aller Aktivitäten-->
+          <div class="col-md-3">
               <div class="card">
                   <div class="card-header card-header-danger">
-                      <h4 class="card-title ">Supply Chain</h4>
-                      <p class="card-category"> Hier finden Sie die Lieferkette aller Artikel</p>
+                      <h4 class="card-title ">Auswahl des Assets</h4>
+                      <p class="card-category"> Bitte Asset selektieren</p>
                   </div>
                   <div class="card-body">
-                    <section id="assets-table">
-                      <div class="table-div">
-                        <mat-form-field class="mat-form-field ng-tns-c26-530 mat-primary mat-form-field-type-mat-input mat-form-field-appearance-legacy mat-form-field-can-float mat-form-field-has-label mat-form-field-hide-placeholder">
-                          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-                        </mat-form-field>
-                        <table mat-table
-                           [dataSource]="activities" multiTemplateDataRows
-                           class="mat-elevation-z8">
-                          <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 
-                              <!-- Manuelle Zuweisung, damit in der Tabelle die Namen in schön stehen -->
-                              <span *ngIf="column=='activityId'"> Acitivity ID </span>
-                              <span *ngIf="column=='stationId'"> Station </span>
-                              <span *ngIf="column=='assetName'"> Asset </span>
-                              <span *ngIf="column=='startDate'"> Datum </span>
-                              <span *ngIf="column=='user'"> Benutzer </span>
-                              <span *ngIf="column=='document'"> Dokument </span>
-                            </th>
-                            <td mat-cell *matCellDef="let element">
-                              <!--Wenn sich die Spalte auf das Dokument bezieht -->
-                              <span *ngIf="column=='document' ; else showElement">
-                                <!--Wenn Dokument vorhanden-->
-                                <span *ngIf="element[column]">
-                                  <mat-icon aria-hidden="false" aria-label="Custom checkbox" (click)="showPdf(element.document)">picture_as_pdf</mat-icon>
-                                </span>
-                                 <!--Wenn Dokument NICHT vorhanden-->
-                                <span *ngIf="!element[column]">
-                                  <mat-icon aria-hidden="true" aria-label="Custom checkbox">not_interested</mat-icon>
-                                </span>
-                              </span> 
-                              <ng-template #showElement>
-                                <span> {{ element[column] }}</span>
-                              </ng-template>
-                            </td>
-                          </ng-container>
-                          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-                          <tr mat-row *matRowDef="let element; columns: columnsToDisplay;">
-                          </tr>
-                        </table>
-                        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-                      </div>
-                    </section>
-                         
-                  </div>
+                    <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+                      <label style="text-align:left">                      
+                        <select class="form-control" formControlName="assetid" id="assetid">
+                          <option *ngFor="let asset of assetList; let i = index" [value]="assetList[i].assetId">
+                            {{assetList[i].name}}
+                          </option>
+                        </select> 
+                      </label>
+                      <input type="submit" style="width:100%" value="Supply Chain anzeigen" class="btn btn-dark" >
+                    </form>
               </div>
           </div>
       </div>
+      <!--Liste aller Aktivitäten-->
+      <div class="col-md-9">
+        <div class="card">
+            <div class="card-header card-header-danger">
+                <h4 class="card-title ">Supply Chain</h4>
+                <p class="card-category"> Hier finden Sie die Lieferkette aller Artikel</p>
+            </div>
+            <div class="card-body">
+              <section id="assets-table">
+                <div class="table-div">
+                  <mat-form-field class="mat-form-field ng-tns-c26-530 mat-primary mat-form-field-type-mat-input mat-form-field-appearance-legacy mat-form-field-can-float mat-form-field-has-label mat-form-field-hide-placeholder">
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                  </mat-form-field>
+                  <table mat-table
+                     [dataSource]="activities" multiTemplateDataRows
+                     class="mat-elevation-z8">
+                    <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> 
+                        <!-- Manuelle Zuweisung, damit in der Tabelle die Namen in schön stehen -->
+                        <span *ngIf="column=='activityId'"> Acitivity ID </span>
+                        <span *ngIf="column=='stationId'"> Station </span>
+                        <span *ngIf="column=='assetName'"> Asset </span>
+                        <span *ngIf="column=='startDate'"> Datum </span>
+                        <span *ngIf="column=='user'"> Benutzer </span>
+                        <span *ngIf="column=='document'"> Dokument </span>
+                      </th>
+                      <td mat-cell *matCellDef="let element">
+                        <!--Wenn sich die Spalte auf das Dokument bezieht -->
+                        <span *ngIf="column=='document' ; else showElement">
+                          <!--Wenn Dokument vorhanden-->
+                          <span *ngIf="element[column]">
+                            <mat-icon aria-hidden="false" aria-label="Custom checkbox" (click)="showPdf(element.document)">picture_as_pdf</mat-icon>
+                          </span>
+                           <!--Wenn Dokument NICHT vorhanden-->
+                          <span *ngIf="!element[column]">
+                            <mat-icon aria-hidden="true" aria-label="Custom checkbox">not_interested</mat-icon>
+                          </span>
+                        </span> 
+                        <ng-template #showElement>
+                          <span> {{ element[column] }}</span>
+                        </ng-template>
+                      </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;">
+                    </tr>
+                  </table>
+                  <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                </div>
+              </section>   
+            </div>
+         </div>
+      </div>
   </div>
 </div>
-
 
 
 <!-- DASHBOARD -->
@@ -92,7 +86,7 @@
     <div class="main-content">
       <div class="container-fluid">
           <div class="row">
-              <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="col-lg-4 col-md-6 col-sm-6">
                   <div class="card card-stats">
                       <div class="card-header card-header-warning card-header-icon">
                           <div class="card-icon">
@@ -111,7 +105,7 @@
                       </div>
                   </div>
               </div>
-              <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="col-lg-4 col-md-6 col-sm-6">
                   <div class="card card-stats">
                       <div class="card-header card-header-success card-header-icon">
                           <div class="card-icon">
@@ -127,7 +121,7 @@
                       </div>
                   </div>
               </div>
-              <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="col-lg-4 col-md-6 col-sm-6">
                   <div class="card card-stats">
                       <div class="card-header card-header-danger card-header-icon">
                           <div class="card-icon">
@@ -143,41 +137,8 @@
                       </div>
                   </div>
               </div>
-              <div class="col-lg-3 col-md-6 col-sm-6">
-                  <div class="card card-stats">
-                      <div class="card-header card-header-info card-header-icon">
-                          <div class="card-icon">
-                              <i class="fa fa-twitter"></i>
-                          </div>
-                          <p class="card-category">Followers</p>
-                          <h3 class="card-title">+245</h3>
-                      </div>
-                      <div class="card-footer">
-                          <div class="stats">
-                              <i class="material-icons">update</i> Just Updated
-                          </div>
-                      </div>
-                  </div>
-              </div>
           </div>      
       </div>
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-<!--
-<button ion-button  (click)="showPdf()">Save</button>
-
-<div class="form-group">
-  <label for="file">Choose File</label>
-  <input type="file"
-         id="file"
-         (change)="handleFileInput($event.target.files)">
-</div>
--->

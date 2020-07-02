@@ -12,6 +12,7 @@ import { RetailerComponent } from './retailer/retailer.component';
 import { ShipperComponent } from './shipper/shipper.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 
+
 import { AuthGuard } from './_guards/auth.guard';
 
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'retailer', component: RetailerComponent, canActivate: [AuthGuard] },
   { path: 'shipper', component: ShipperComponent, canActivate: [AuthGuard] },
   { path: 'users', component: UserManagementComponent, canActivate: [AuthGuard] },
+
 
   // otherwise redirect to login
   { path: '**', redirectTo: '/login' }
