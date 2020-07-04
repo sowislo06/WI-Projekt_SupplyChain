@@ -32,6 +32,11 @@ import { CreateActivityComponent } from './_partials/create-activity/create-acti
 import { ApiService, AuthService, UserService } from './_services/index';
 import { AuthGuard } from './_guards/auth.guard';
 import { CreateAssetComponent } from './_partials/create-asset/create-asset.component';
+import { QualitymanagementComponent } from './_partials/qualitymanagement/qualitymanagement.component';
+import { EmployeeComponent } from './employee/employee.component';
+import { ProcurementComponent } from './procurement/procurement.component';
+import { CustomerComponent } from './customer/customer.component';
+import { SupervisorComponent } from './supervisor/supervisor.component';
 
 
 
@@ -50,6 +55,11 @@ import { CreateAssetComponent } from './_partials/create-asset/create-asset.comp
     CreateAssetComponent,
     CreateActivityComponent,
     StatisticsComponent,
+    QualitymanagementComponent,
+    EmployeeComponent,
+    ProcurementComponent,
+    CustomerComponent,
+    SupervisorComponent,
   ],
   imports: [
     BrowserModule,
