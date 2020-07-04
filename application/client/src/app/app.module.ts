@@ -4,7 +4,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MatPaginatorModule, MatDialogModule, MatDividerModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule,MatMenuModule,MatProgressBarModule, MatStepperModule,MatTableModule,MatTabsModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
+import { MatSelectModule, MatButtonModule, MatSidenavModule, MatCheckboxModule, MatPaginatorModule, MatDialogModule, MatDividerModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule,MatMenuModule,MatProgressBarModule, MatStepperModule,MatTableModule,MatTabsModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
+import {MatListModule} from '@angular/material/list';
+
+
+
 
 
 
@@ -65,7 +69,7 @@ import { CreateAssetComponent } from './_partials/create-asset/create-asset.comp
     CreateStationComponent,
     CreateAssetComponent,
     CreateActivityComponent,
-    StatisticsComponent
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,7 +85,10 @@ import { CreateAssetComponent } from './_partials/create-asset/create-asset.comp
     MatTabsModule,
     MatTableModule,
     MatToolbarModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSidenavModule,
+    MatListModule,
+    MatSelectModule
   ],
   providers: [
     ApiService,

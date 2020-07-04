@@ -15,6 +15,12 @@ import { UserManagementComponent } from './user-management/user-management.compo
 
 import { AuthGuard } from './_guards/auth.guard';
 
+/*
+*
+* Qualitätssicherung, Mitarbeiter, Einkauf, Verkauf, Kunde, Leitung
+*
+*/
+
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'enroll', component: EnrollComponent },
