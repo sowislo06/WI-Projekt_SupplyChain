@@ -33,7 +33,6 @@ export class AuthService {
   }
 
   logout() {
-    this.api.clearOrders();
     // remove user from local storage to log user out
     this.userService.clearCurrentUser();
     localStorage.removeItem('currentUser');

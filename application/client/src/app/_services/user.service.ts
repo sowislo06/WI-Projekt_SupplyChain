@@ -12,15 +12,7 @@ export class UserService {
   options: Object;
 
   constructor() {
-    // initialize users - for testing without connecting to a blockchain network
-    // this.users = [
-    //   {"userid": "kai", "password": "test123", "role": "admin"},
-    //   {"userid": "producer1", "password": "test123", "role": "producer"},
-    //   {"userid": "retailer1", "password": "test123", "role": "retailer"},
-    //   {"userid": "shipper1", "password": "test123", "role": "shipper"},
-    //   {"userid": "regulator1", "password": "test123", "role": "regulator"},
-    //   {"userid": "customer", "password": "test123", "role": "customer"},
-    // ];
+
     //
     // this.currentUser = {
     //   userid: "admin",
