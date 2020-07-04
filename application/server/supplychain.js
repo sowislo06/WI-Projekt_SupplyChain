@@ -9,7 +9,6 @@ const utils = require('./utils.js');
 const supplychainRouter = express.Router();
 
 // Bring key classes into scope, most importantly Fabric SDK network class
-const Order = require('../../contract/lib/order.js');
 const Station = require('../../contract/lib/station.js');
 const Asset = require('../../contract/lib/asset.js');
 const Activity = require('../../contract/lib/activity.js');
@@ -24,7 +23,6 @@ const INVALID_HEADER = 1001;
 
 //  application specific errors
 const SUCCESS = 0;
-const ORDER_NOT_FOUND = 2000;
 const STATION_NOT_FOUND = 2000;
 const ASSET_NOT_FOUND = 2000;
 const ACTIVITY_NOT_FOUND = 2000;
@@ -85,172 +83,6 @@ async function submitTx(request, txName, ...args) {
         return Promise.reject(error);
     }
 }
-
-////////////////////////////////// Order Management APIs ///////////////////////////////////////
-
-supplychainRouter.route('/orders').get(function (request, response) {
-    submitTx(request, 'queryAllOrders', '')
-        .then((queryOrderResponse) => {
-            //  response is already a string;  not a buffer
-            let orders = queryOrderResponse;
-            response.status(STATUS_SUCCESS);
-            response.send(orders);
-        }, (error) => {
-            response.status(STATUS_SERVER_ERROR);
-            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
-                "There was a problem getting the list of orders."));
-        });
-});  //  process route orders/
-
-supplychainRouter.route('/orders/:id').get(function (request, response) {
-    submitTx(request, 'queryOrder', request.params.id)
-        .then((queryOrderResponse) => {
-            // process response
-            let order = Order.fromBuffer(queryOrderResponse);
-            console.log(`order ${order.orderId} : price = ${order.price}, quantity = ${order.quantity}, producer = ${order.producerId}, consumer = ${order.retailerId}, trackingInfo = ${order.trackingInfo}, state = ${order.currentOrderState}`);
-            response.status(STATUS_SUCCESS);
-            response.send(order);
-        }, (error) => {
-            response.status(STATUS_SERVER_ERROR);
-            response.send(utils.prepareErrorResponse(error, ORDER_NOT_FOUND,
-                'Order id, ' + request.params.id +
-                ' does not exist or the user does not have access to order details at this time.'));
-        });
-});
-
-
-supplychainRouter.route('/orders').post(function (request, response) {
-    submitTx(request, 'orderProduct', JSON.stringify(request.body))
-        .then((result) => {
-            // process response
-            console.log('\nProcess orderProduct transaction.');
-            let order = Order.fromBuffer(result);
-            console.log(`order ${order.orderId} : price = ${order.price}, quantity = ${order.quantity}, producer = ${order.producerId}, consumer = ${order.retailerId}, trackingInfo = ${order.trackingInfo}, state = ${order.currentOrderState}`);
-            response.status(STATUS_SUCCESS);
-            response.send(order);
-        }, (error) => {
-            response.status(STATUS_SERVER_ERROR);
-            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
-                "There was a problem placing the order."));
-        });
-});
-
-
-supplychainRouter.route('/order-history/:id').get(function (request, response) {
-    submitTx(request, 'getOrderHistory', request.params.id)
-        .then((orderHistoryResponse) => {
-            console.log('\n>>>Process getOrderHistory response', orderHistoryResponse);
-            //  response is already a string;  not a buffer
-            //  no need of conversion from buffer to string
-            response.status(STATUS_SUCCESS);
-            response.send(orderHistoryResponse);
-        }, (error) => {
-            response.status(STATUS_SERVER_ERROR);
-            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
-                "There was a problem fetching history for order, ", request.params.id));
-        });
-});
-
-// Change status to ORDER_RECEIVED
-supplychainRouter.route('/receive-order/:id').put(function (request, response) {
-    submitTx(request, 'receiveOrder', request.params.id)
-        .then((receiveOrderResponse) => {
-            // process response
-            console.log('Process ReceiveOrder transaction.');
-            let order = Order.fromBuffer(receiveOrderResponse);
-            console.log(`order ${order.orderId} : state = ${order.currentOrderState}`);
-            response.status(STATUS_SUCCESS);
-            response.send(order);
-        }, (error) => {
-            response.status(STATUS_SERVER_ERROR);
-            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
-                "There was a problem in receiving order, ", request.params.id));
-        });
-
-});  //  process route /
-
-// Change status to ORDER_RECEIVED, add name of a shipper to order.
-supplychainRouter.route('/assign-shipper/:id').put(function (request, response) {
-    submitTx(request, 'assignShipper', request.params.id, request.query.shipperid)
-        .then((assignShipperResponse) => {
-            console.log('Process AssignShipper transaction.');
-            let order = Order.fromBuffer(assignShipperResponse);
-            console.log(`order ${order.orderId} : shipper = ${order.shipperId}, state = ${order.currentOrderState}`);
-            response.status(STATUS_SUCCESS);
-            response.send(order);
-        }, (error) => {
-            response.status(STATUS_SERVER_ERROR);
-            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
-                "There was a problem in assigning shipper for order, ", request.params.id));
-        });
-});  //  process route /
-
-// This changes the status on the order, and adds a ship id
-supplychainRouter.route('/create-shipment-for-order/:id').put(function (request, response) {
-    submitTx (request, 'createShipment', request.params.id, utils.getRandomNum())
-      .then((createShipmentResponse) => {
-          console.log('Process CreateShipment transaction.');
-          let order = Order.fromBuffer(createShipmentResponse);
-          console.log(`order ${order.orderId} : trackingInfo = ${order.trackingInfo}, state = ${order.currentOrderState}`);
-          response.status(STATUS_SUCCESS);
-          response.send(order);
-      }, (error) => {
-          response.status(STATUS_SERVER_ERROR);
-          response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
-              "There was a problem in creating shipment for order," + request.params.id));
-      });
-});  //  process route /
-
-// This changes the status on the order
-supplychainRouter.route('/transport-shipment/:id').put(function (request, response) {
-    submitTx(request, 'transportShipment', request.params.id)
-        .then((transportShipmentResponse) => {
-            console.log('Process TransportShipment transaction.');
-            let order = Order.fromBuffer(transportShipmentResponse);
-            console.log(`order ${order.orderId} : state = ${order.currentOrderState}`);
-            response.status(STATUS_SUCCESS);
-            response.send(order);
-        }, (error) => {
-            response.status(STATUS_SERVER_ERROR);
-            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
-                "There was a problem in initiating shipment for order," + request.params.id));
-        });
-});  //  process route /
-
-// This changes the status on the order
-supplychainRouter.route('/receive-shipment/:id').put(function (request, response) {
-    submitTx(request, 'receiveShipment', request.params.id)
-        .then((receiveShipmentResponse) => {
-            // process response
-            console.log('Process ReceiveShipment transaction.');
-            let order = Order.fromBuffer(receiveShipmentResponse);
-            console.log(`order ${order.orderId} : state = ${order.currentOrderState}`);
-            response.status(STATUS_SUCCESS);
-            response.send(order);
-        }, (error) => {
-            response.status(STATUS_SERVER_ERROR);
-            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
-                "There was a problem in receiving shipment for order," + request.params.id));
-        });
-});
-
-// Delete designated order with id
-//  app.delete('/api/orders/:id', (request, response) => {
-//  contract.submitTransaction('deleteOrder', request.params.id)
-supplychainRouter.route('/orders/:id').delete(function (request, response) {
-    submitTx(request, 'deleteOrder', request.params.id)
-        .then((deleteOrderResponse) => {
-            // process response
-            console.log('Process DeleteOrder transaction.');
-            console.log('Transaction complete.');
-            response.status(STATUS_SUCCESS);
-            response.send(deleteOrderResponse);
-        }, (error) => {
-            response.status(STATUS_SERVER_ERROR);
-            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
-                "There was a problem in deleting order, " + request.params.id));
-        });
-});
 
 ////////////////////////////////// Station Management APIs ///////////////////////////////////////
 

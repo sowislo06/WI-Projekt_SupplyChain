@@ -1,7 +1,7 @@
 {
   "name": "gen_supply_chain_server",
   "version": "1.0.0",
-  "description": "API server for Blockchain Generic Supply Chain",
+  "description": "WI-Projekt der Universität Osnabrück",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
