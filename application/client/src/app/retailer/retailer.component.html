@@ -1,37 +1,21 @@
-<mat-drawer-container class="example-container">
-  <mat-drawer mode="side" opened>
-    <h3>Retailer Portal - {{currentUser.userid}}</h3>
-
-    <mat-selection-list #shoes >
-      <mat-list-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
-        {{shoe}}
-      </mat-list-option>
-    </mat-selection-list>
-
-    <p>
-      Option selected: {{shoes.selectedOptions.selected[0]?.value}}
-    </p>
-    
-
-  </mat-drawer>
-  <mat-drawer-content>
-
-    <span ng-if="shoes.selectedOptions.selected[0]?.value == 'Clogs'">
-
-      <statistics></statistics>
-    </span>
-    
-    
-    </mat-drawer-content>
-</mat-drawer-container>
-
 <section id="retailer">
-  <h3>Retailer Portal - {{currentUser.userid}}</h3>
-<!--
+  
+  <div class="col-md-12">
+    <div class="card">
+        <div class="card-header card-header-info">
+            <h1 class="card-title "> Portal - Rolle: {{currentUser.userid}}</h1>
+        </div>
+        <div class="card-body">
+          <h3>Hier können sie alle Funktionen ausführen, zu denen Sie berechtigt sind.</h3>
+        </div>
+      </div>
+    </div>
+
+
 
   <mat-tab-group>
-    <mat-tab label="Dashboard"><dashboard></dashboard></mat-tab>
+    <mat-tab label="Benutzermangement"><dashboard></dashboard></mat-tab>
     <mat-tab label="Supply Chain"><statistics></statistics></mat-tab>
   </mat-tab-group>
-</section>-->
+</section>
 

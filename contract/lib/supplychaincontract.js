@@ -528,7 +528,7 @@ class SupplychainContract extends Contract {
          // Access Control: This transaction should only be invoked by designated designated Shipper
          let userId = await this.getCurrentUserId(ctx);
  
-         if (userId == "admin") // admin only has access as a precaution.
+         if (userId != "admin") // admin only has access as a precaution.
              throw new Error(`${userId} does not have access`);
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
