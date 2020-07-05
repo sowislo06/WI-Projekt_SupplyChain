@@ -16,16 +16,18 @@ import {MatListModule} from '@angular/material/list';
 })
 export class RetailerComponent implements OnInit {
 
+
   currentUser: any;
-  typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
 
   constructor(private user: UserService, private router: Router) { }
 
   ngOnInit() {
     this.currentUser = this.user.getCurrentUser();
-    //Prüfen, ob Nutzer berechtigung hat!
-    if (this.currentUser.usertype != 'admin' || this.currentUser.usertype != 'Verkauf') {
-      this.router.navigate(['/login']);
+    if (this.currentUser.usertype != 'admin') {
+      if (this.currentUser.usertype != 'Verkauf') {
+        this.router.navigate(['/login']);
+      }
     } 
   }
+
 }
