@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from './_services/auth.service';
+import { UserService } from './_services/index';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -7,10 +9,15 @@ import { AuthService } from './_services/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent{
-  title = 'WI-Projekt – Forschung und Entwicklung';
+  title = 'Supply-Chain-Portal';
+  currentUser: any;
 
-  constructor(private authService: AuthService){}
+  constructor(private user: UserService, private authService: AuthService, private router: Router){}
 
+  ngOnInit() {
+    this.currentUser = this.user.getCurrentUser();
+  } 
+  
   logout(){
     console.log("inside Logout");
     this.authService.logout();
