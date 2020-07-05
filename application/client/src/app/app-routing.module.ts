@@ -28,7 +28,7 @@ const routes: Routes = [
   // Main Pages
 
   { path: 'retailer', component: RetailerComponent, canActivate: [AuthGuard] },
-  { path: 'users', component: UserManagementComponent, canActivate: [AuthGuard] },
+  //{ path: 'users', component: UserManagementComponent, canActivate: [AuthGuard] },
   { path: 'quality', component: QualitymanagementComponent, canActivate: [AuthGuard] },
   { path: 'supervisor', component: SupervisorComponent, canActivate: [AuthGuard] },
   { path: 'employee', component: EmployeeComponent, canActivate: [AuthGuard] },
