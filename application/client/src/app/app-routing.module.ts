@@ -7,6 +7,11 @@ import { EnrollComponent } from './enroll/enroll.component';
 import { RetailerComponent } from './retailer/retailer.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { QualitymanagementComponent } from './qualitymanagement/qualitymanagement.component';
+import { SupervisorComponent } from './supervisor/supervisor.component';
+import { EmployeeComponent } from './employee/employee.component';
+import { ProcurementComponent } from './procurement/procurement.component';
+import { CustomerComponent } from './customer/customer.component';
+
 
 
 import { AuthGuard } from './_guards/auth.guard';
@@ -24,7 +29,13 @@ const routes: Routes = [
 
   { path: 'retailer', component: RetailerComponent, canActivate: [AuthGuard] },
   { path: 'users', component: UserManagementComponent, canActivate: [AuthGuard] },
-  { path: 'procurement', component: QualitymanagementComponent, canActivate: [AuthGuard] },
+  { path: 'quality', component: QualitymanagementComponent, canActivate: [AuthGuard] },
+  { path: 'supervisor', component: SupervisorComponent, canActivate: [AuthGuard] },
+  { path: 'employee', component: EmployeeComponent, canActivate: [AuthGuard] },
+  { path: 'procurement', component: ProcurementComponent, canActivate: [AuthGuard] },
+  { path: 'customer', component: CustomerComponent, canActivate: [AuthGuard] },
+
+
 
   // otherwise redirect to login
   { path: '**', redirectTo: '/login' }

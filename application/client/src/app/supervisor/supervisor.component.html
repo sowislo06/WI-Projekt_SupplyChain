@@ -1,3 +1,26 @@
-<p>
-  supervisor works!
-</p>
+<section id="retailer">
+  
+  <div class="col-md-12">
+    <div class="card">
+        <div class="card-header card-header-info">
+            <h1 class="card-title "> Herzlich Willkommen!</h1>
+        </div>
+        <div class="card-body">
+          <h3>Hier können sie alle Funktionen ausführen, zu denen Sie berechtigt sind.</h3>
+        </div>
+      </div>
+    </div>
+
+
+
+  <mat-tab-group>
+    <mat-tab label="Lagerverwaltung"><dashboard></dashboard></mat-tab>
+    <mat-tab label="Lieferkette"><statistics></statistics></mat-tab>
+    <mat-tab label="Umlagerung anlegen"><create-activity></create-activity></mat-tab>
+    <mat-tab label="Asset hinzufügen"><create-asset></create-asset></mat-tab>
+    <mat-tab label="Lagerort hinzufügen"><create-station></create-station></mat-tab>
+    <mat-tab label="Benutzermangement"><app-user-management></app-user-management></mat-tab>
+
+  </mat-tab-group>
+</section>
+

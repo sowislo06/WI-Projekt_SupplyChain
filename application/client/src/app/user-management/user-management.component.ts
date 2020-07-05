@@ -1,8 +1,9 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService, AuthService } from '../_services/index';
 
-import {MatTableDataSource} from '@angular/material/table';
+
+import {MatPaginator, MatSort, MatTableDataSource, MatDrawer} from '@angular/material';
 
 @Component({
   selector: 'app-user-management',
@@ -22,12 +23,16 @@ export class UserManagementComponent implements OnInit{
   allUsers: MatTableDataSource<EditUser[]>;
   columnsToDisplay = ['id', 'usertype', 'enrolled'];
 
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
   constructor(private api: ApiService, private auth: AuthService, private formBuilder: FormBuilder){}
 
 
   //Init
   ngOnInit(){
-    this.types = ["retailer", "producer", "shipper", "customer", "regulator"];
+    this.types = ["Qualitätssicherung", "Mitarbeiter", "Einkauf", "Verkauf", "Kunde", "Leitung"];
 
     this.newUserForm = this.formBuilder.group({
       id: ['', Validators.required],
@@ -88,11 +93,20 @@ export class UserManagementComponent implements OnInit{
           });
         }
         this.allUsers = new MatTableDataSource(userArray);
+        this.allUsers.paginator = this.paginator;
+        this.allUsers.sort = this.sort;
       }, error => {
         console.log(JSON.stringify(error));
         alert("Problem loading user list: " + error['error']['message']);
       });
     }
+  }
+
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.allUsers.filter = filterValue;
   }
 }
 

@@ -23,9 +23,9 @@ export class RetailerComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.user.getCurrentUser();
-    if (this.currentUser.userid != 'admin') {
+    //Prüfen, ob Nutzer berechtigung hat!
+    if (this.currentUser.usertype != 'admin' || this.currentUser.usertype != 'Verkauf') {
       this.router.navigate(['/login']);
     } 
-
   }
 }
