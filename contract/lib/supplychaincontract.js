@@ -353,6 +353,7 @@ class SupplychainContract extends Contract {
         asset.name = asset_details.name;
         //asset.station = station;
         asset.stationId = asset_details.stationId;
+        asset.qualitychecked = false;
 
         // Update ledger
         await ctx.stub.putState(assetId, asset.toBuffer());
