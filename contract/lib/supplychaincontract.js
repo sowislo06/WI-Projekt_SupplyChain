@@ -554,6 +554,45 @@ class SupplychainContract extends Contract {
         return asset.toBuffer();
     }
 
+            /**
+      * updateStationInAsset
+      * To be called by a Producer when an order is received (and he begins to process the order)
+      *
+      * @param {Context} ctx the transaction context
+      * @param {String}  assetId
+      * @param {String}  stationId
+      * Usage:  receiveOrder ('asset-0000')
+     */
+    async updateStationInAsset(ctx, assetId, stationId) {
+        console.info('============= updateQuality ===========');
+
+        if (assetId.length < 1) {
+            throw new Error('assetId is required as input')
+        }
+
+        // Retrieve the current asset using key provided
+        var assetAsBytes = await ctx.stub.getState(assetId);
+        if (!assetAsBytes || assetAsBytes.length === 0) {
+            throw new Error(`Error Message from updateQuality: Asset with assetId = ${assetId} does not exist.`);
+        }
+
+        // Convert asset so we can modify fields
+        var asset = Asset.deserialize(assetAsBytes);
+
+        // Access Control: This transaction should only be invoked by designated Producer
+        let userId = await this.getCurrentUserId(ctx);
+
+        if (userId != "admin") // admin only has access as a precaution.
+            throw new Error(`${userId} does not have access to update quality from ${assetId}`);
+
+        // Change currentQuality
+        asset.stationId = stationId;
+
+
+        // Update ledger
+        await ctx.stub.putState(assetId, asset.toBuffer());
+    }
+
     /**
      * queryAllStations
      * 
@@ -710,6 +749,18 @@ class SupplychainContract extends Contract {
         finally {
             console.log("Attempted to send event = ", activity);
         }
+
+
+        //Update the asset
+        
+        // Change currentQuality
+        asset.stationId = stationId;
+
+        // Update ledger
+        await ctx.stub.putState(assetId, asset.toBuffer());
+
+
+
 
         // Must return a serialized activity to caller of smart contract
         return activity.toBuffer();
