@@ -51,7 +51,14 @@ export class QualitycheckComponent implements OnInit {
     //Schreibt den Wert aus den MessageForm auf eine globale Variable
     this.api.id = this.messageForm.controls.assetId.value;
     
-    this.api.setQualitiy();
+
+
+    this.api.setQualitiy().subscribe(api => {
+      console.log("Test");
+    }, error => {
+      console.log(JSON.stringify(error));
+      alert("Problem receiving shipment: " + error['error']['message'])
+    })
   }
     
 

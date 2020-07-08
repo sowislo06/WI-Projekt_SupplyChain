@@ -190,7 +190,7 @@ export class ApiService {
   setQualitiy() {
     let headers = new HttpHeaders();
     headers = this.createUserAuthorizationHeader(headers);
-    console.log("Test" + this.id);
-    return this.httpClient.put(this.baseUrl + '/api/qualitiy/' + this.id, {headers:headers});
+    console.log(this.id);
+    return this.httpClient.put(this.baseUrl + '/api/quality/' + this.id, {}, {headers:headers});
   }
 }

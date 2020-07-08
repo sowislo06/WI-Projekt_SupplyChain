@@ -514,53 +514,44 @@ class SupplychainContract extends Contract {
     }
 
         /**
-     * deleteAsset
-     *
-     * @param {Context} ctx the transaction context
-     * @param {String}  args
-     * Usage:  deleteAsset ('Asset001')
-     * 
-     * curl -X DELETE -H "authorization: Basic YWRtaW46YWRtaW5wdw" "http://localhost:3000/api/assets/Asset001" 
+      * updateQuality
+      * To be called by a Producer when an order is received (and he begins to process the order)
+      *
+      * @param {Context} ctx the transaction context
+      * @param {String}  assetId
+      * Usage:  receiveOrder ('asset-0000')
      */
-
     async updateQuality(ctx, assetId) {
+        console.info('============= updateQuality ===========');
 
-        console.info('============= upadteQuality ===========');
         if (assetId.length < 1) {
-            throw new Error('assetId required as input')
+            throw new Error('assetId is required as input')
         }
-        console.log("assetId = " + assetId);
 
+        // Retrieve the current asset using key provided
+        var assetAsBytes = await ctx.stub.getState(assetId);
+        if (!assetAsBytes || assetAsBytes.length === 0) {
+            throw new Error(`Error Message from updateQuality: Asset with assetId = ${assetId} does not exist.`);
+        }
 
-
-
-        // Access Control: This transaction should only be invoked by designated originating Retailer or Producer
-        //var asset = Station.deserialize(assetAsBytes); Wird benötigt, wenn man Abfrage macht. Siehe deleteOrder
-        let userId = await this.getCurrentUserId(ctx);
-
-        if (userId != "admin") 
-            throw new Error(`${userId} does not have access to delete asset ${assetId}`);
-
-
-            
-
-        //1) Asset holen
-
-        var assetAsBytes = await this.queryAsset(assetId);
+        // Convert asset so we can modify fields
         var asset = Asset.deserialize(assetAsBytes);
 
-        //2) Asset bearbeiten
+        // Access Control: This transaction should only be invoked by designated Producer
+        let userId = await this.getCurrentUserId(ctx);
 
+        if (userId != "admin") // admin only has access as a precaution.
+            throw new Error(`${userId} does not have access to update quality from ${assetId}`);
+
+        // Change currentQuality
         asset.qualitychecked = true;
-        
-        //3) Asset speichern (überschreiben)
-        
 
 
-   
+        // Update ledger
+        await ctx.stub.putState(assetId, asset.toBuffer());
 
-
-        await ctx.stub.putState(assetId, asset.toBuffer()); //remove the asset from chaincode state
+        // Must return a serialized order to caller of smart contract
+        return asset.toBuffer();
     }
 
     /**
@@ -574,7 +565,7 @@ class SupplychainContract extends Contract {
     */
     async queryAllAssets(ctx) {
         const startKey = 'asset-0000';
-        const endKey = 'asset-ZZZZ';
+        const endKey = 'asset-zzzz';
 
 
         let userId = await this.getCurrentUserId(ctx);

@@ -26,7 +26,7 @@ const SUCCESS = 0;
 const STATION_NOT_FOUND = 2000;
 const ASSET_NOT_FOUND = 2000;
 const ACTIVITY_NOT_FOUND = 2000;
-//Test
+
 
 async function getUsernamePassword(request) {
     // check for basic auth header
@@ -214,20 +214,23 @@ supplychainRouter.route('/assets/:id').delete(function (request, response) {
 });
 
 // Update designated asset (quality)
-supplychainRouter.route('/qualitiy/:id').put(function (request, response) {
+supplychainRouter.route('/quality/:id').put(function (request, response) {
     submitTx(request, 'updateQuality', request.params.id)
-        .then((UpdateAssetResponse) => {
+        .then((updateAssetResponse) => {
             // process response
-            console.log('Process UpdateAsset transaction.');
-            console.log('Transaction complete.');
+            console.log('Process ReceiveOrder transaction.');
+            let asset = Asset.fromBuffer(updateAssetResponse);
+            console.log(`asset ${asset.id} : qualitychecked = ${asset.qualitychecked}`);
             response.status(STATUS_SUCCESS);
-            response.send(UpdateAssetResponse);
+            response.send(asset);
         }, (error) => {
             response.status(STATUS_SERVER_ERROR);
             response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
                 "There was a problem in updating asset, " + request.params.id));
         });
 });
+
+
 
 supplychainRouter.route('/assets-station/:id').get(function (request, response) {
     submitTx(request, 'queryAssetsFromStation', request.params.id)
