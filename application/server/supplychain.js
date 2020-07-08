@@ -213,6 +213,22 @@ supplychainRouter.route('/assets/:id').delete(function (request, response) {
         });
 });
 
+// Update designated asset (quality)
+supplychainRouter.route('/qualitiy/:id').put(function (request, response) {
+    submitTx(request, 'updateQuality', request.params.id)
+        .then((UpdateAssetResponse) => {
+            // process response
+            console.log('Process UpdateAsset transaction.');
+            console.log('Transaction complete.');
+            response.status(STATUS_SUCCESS);
+            response.send(UpdateAssetResponse);
+        }, (error) => {
+            response.status(STATUS_SERVER_ERROR);
+            response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
+                "There was a problem in updating asset, " + request.params.id));
+        });
+});
+
 supplychainRouter.route('/assets-station/:id').get(function (request, response) {
     submitTx(request, 'queryAssetsFromStation', request.params.id)
         .then((queryAssetFromStationResponse) => {

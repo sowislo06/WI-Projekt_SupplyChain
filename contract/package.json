@@ -1,6 +1,6 @@
 {
     "name": "gensupplychainnet",
-    "version": "0.0.110",
+    "version": "0.0.111",
     "description": "My Smart Contract",
     "main": "index.js",
     "engines": {

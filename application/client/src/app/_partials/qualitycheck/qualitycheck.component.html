@@ -1,0 +1,41 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-6">
+              <div class="card">
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title ">Qualität bestätigen</h4>
+                  <p class="card-category"> Bitte alle Felder ausfüllen</p>
+                </div>
+                <div class="card-body">
+
+                  <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+
+
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Asset:</span>
+                      </div>
+                      <select class="form-control" formControlName="assetId" id="assetId">
+                        <option *ngFor="let asset of assetList; let i = index" [value]="assetList[i].assetId">
+                          {{assetList[i].name}}
+                        </option>
+                      </select> 
+                    </div>
+              
+                                
+                    <input type="submit" style="width:100%" value="Check Quality" class="btn btn-dark">
+              
+                  </form>
+              
+                  <div *ngIf="submitted" class="results">
+                      <p *ngIf="success; else elseBlock">Checked Quality succesfully!</p>
+                      <ng-template #elseBlock></ng-template>
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -53,7 +53,6 @@ export class ApiService {
     return this.httpClient.post(this.baseUrl + '/api/activities', this.body, {headers:headers})
   }
 
-  
 
   getAllUsers(){
     let headers = new HttpHeaders();
@@ -186,5 +185,12 @@ export class ApiService {
     headers = this.createUserAuthorizationHeader(headers);
 
     return this.httpClient.get(this.baseUrl + '/api/activities-asset/' + this.id, {headers:headers});
+  }
+
+  setQualitiy() {
+    let headers = new HttpHeaders();
+    headers = this.createUserAuthorizationHeader(headers);
+    console.log("Test" + this.id);
+    return this.httpClient.put(this.baseUrl + '/api/qualitiy/' + this.id, {headers:headers});
   }
 }

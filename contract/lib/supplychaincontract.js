@@ -513,6 +513,56 @@ class SupplychainContract extends Contract {
         await ctx.stub.deleteState(assetId); //remove the asset from chaincode state
     }
 
+        /**
+     * deleteAsset
+     *
+     * @param {Context} ctx the transaction context
+     * @param {String}  args
+     * Usage:  deleteAsset ('Asset001')
+     * 
+     * curl -X DELETE -H "authorization: Basic YWRtaW46YWRtaW5wdw" "http://localhost:3000/api/assets/Asset001" 
+     */
+
+    async updateQuality(ctx, assetId) {
+
+        console.info('============= upadteQuality ===========');
+        if (assetId.length < 1) {
+            throw new Error('assetId required as input')
+        }
+        console.log("assetId = " + assetId);
+
+
+
+
+        // Access Control: This transaction should only be invoked by designated originating Retailer or Producer
+        //var asset = Station.deserialize(assetAsBytes); Wird benötigt, wenn man Abfrage macht. Siehe deleteOrder
+        let userId = await this.getCurrentUserId(ctx);
+
+        if (userId != "admin") 
+            throw new Error(`${userId} does not have access to delete asset ${assetId}`);
+
+
+            
+
+        //1) Asset holen
+
+        var assetAsBytes = await this.queryAsset(assetId);
+        var asset = Asset.deserialize(assetAsBytes);
+
+        //2) Asset bearbeiten
+
+        asset.qualitychecked = true;
+        
+        //3) Asset speichern (überschreiben)
+        
+
+
+   
+
+
+        await ctx.stub.putState(assetId, asset.toBuffer()); //remove the asset from chaincode state
+    }
+
     /**
      * queryAllStations
      * 

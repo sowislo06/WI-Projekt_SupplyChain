@@ -27,6 +27,7 @@ import { DashboardComponent } from './_partials/dashboard/dashboard.component';
 import { StatisticsComponent } from './_partials/statistics/statistics.component';
 import { CreateStationComponent } from './_partials/create-station/create-station.component';
 import { CreateActivityComponent } from './_partials/create-activity/create-activity.component';
+import { QualitycheckComponent } from './_partials/qualitycheck/qualitycheck.component';
 
 /* Services */
 import { ApiService, AuthService, UserService } from './_services/index';
@@ -37,6 +38,7 @@ import { EmployeeComponent } from './employee/employee.component';
 import { ProcurementComponent } from './procurement/procurement.component';
 import { CustomerComponent } from './customer/customer.component';
 import { SupervisorComponent } from './supervisor/supervisor.component';
+
 
 
 
@@ -60,6 +62,7 @@ import { SupervisorComponent } from './supervisor/supervisor.component';
     ProcurementComponent,
     CustomerComponent,
     SupervisorComponent,
+    QualitycheckComponent,
   ],
   imports: [
     BrowserModule,
