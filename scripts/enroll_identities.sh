@@ -7,33 +7,25 @@ echo "What is the IP address for the API server (default is localhost:3000)?"
 read API_URL
 API_URL=${API_URL:-localhost:3000}
 # base64 encoded string 'userid:userpwd' added for authorization header
-echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic V2FsbWFydDpXYWxtYXJ0" -H "Content-Type: application/json" -d "{\"usertype\":\"retailer\"}"'
-curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic V2FsbWFydDpXYWxtYXJ0" -H "Content-Type: application/json" -d "{\"usertype\":\"retailer\"}"
+echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic SHVtbWVsczpIdW1tZWxz" -H "Content-Type: application/json" -d "{\"usertype\":\"Leitung\"}"'
+curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic SHVtbWVsczpIdW1tZWxz" -H "Content-Type: application/json" -d "{\"usertype\":\"Leitung\"}"
 echo ""
 echo ""
-echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic SEVCOkhFQg==" -H "Content-Type: application/json" -d "{\"usertype\":\"retailer\"}"'
-curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic SEVCOkhFQg==" -H "Content-Type: application/json" -d "{\"usertype\":\"retailer\"}"
+echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic SmFuc2VuOkphbnNlbg==" -H "Content-Type: application/json" -d "{\"usertype\":\"Kunde\"}"'
+curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic SmFuc2VuOkphbnNlbg==" -H "Content-Type: application/json" -d "{\"usertype\":\"Kunde\"}"
 echo ""
 echo ""
-echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic R0hGYXJtOkdIRmFybQ==" -H "Content-Type: application/json" -d "{\"usertype\":\"producer\"}"'
-curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic R0hGYXJtOkdIRmFybQ==" -H "Content-Type: application/json" -d "{\"usertype\":\"producer\"}"
+echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic UGV0ZXJzOlBldGVycw==" -H "Content-Type: application/json" -d "{\"usertype\":\"Verkauf\"}"'
+curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic UGV0ZXJzOlBldGVycw====" -H "Content-Type: application/json" -d "{\"usertype\":\"Verkauf\"}"
 echo ""
 echo ""
-echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic QUJGYXJtOkFCRmFybQ==" -H "Content-Type: application/json" -d "{\"usertype\":\"producer\"}"'
-curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic QUJGYXJtOkFCRmFybQ==" -H "Content-Type: application/json" -d "{\"usertype\":\"producer\"}"
+echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic RnVjaHM6RnVjaHM=" -H "Content-Type: application/json" -d "{\"usertype\":\"Einkauf\"}"'
+curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic RnVjaHM6RnVjaHM=" -H "Content-Type: application/json" -d "{\"usertype\":\"Einkauf\"}"
 echo ""
 echo ""
-echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic RkRBOkZEQQ==" -H "Content-Type: application/json" -d "{\"usertype\":\"regulator\"}"'
-curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic RkRBOkZEQQ==" -H "Content-Type: application/json" -d "{\"usertype\":\"regulator\"}"
+echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic QnJhY2h0OkJyYWNodA==" -H "Content-Type: application/json" -d "{\"usertype\":\"Mitarbeiter\"}"'
+curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic QnJhY2h0OkJyYWNodA==" -H "Content-Type: application/json" -d "{\"usertype\":\"Mitarbeiter\"}"
 echo ""
 echo ""
-echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic RmVkZXg6RmVkZXg=" -H "Content-Type: application/json" -d "{\"usertype\":\"shipper\"}"'
-curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic RmVkZXg6RmVkZXg=" -H "Content-Type: application/json" -d "{\"usertype\":\"shipper\"}"
-echo ""
-echo ""
-echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic VVBTOlVQUw==" -H "Content-Type: application/json" -d "{\"usertype\":\"shipper\"}"'
-curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic VVBTOlVQUw==" -H "Content-Type: application/json" -d "{\"usertype\":\"shipper\"}"
-echo ""
-echo ""
-echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic QUN1c3RvbWVyOkFDdXN0b21lcg==" -H "Content-Type: application/json" -d "{\"usertype\":\"customer\"}"'
-curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic QUN1c3RvbWVyOkFDdXN0b21lcg==" -H "Content-Type: application/json" -d "{\"usertype\":\"customer\"}"
+echo 'curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic V2Vzc2luZzpXZXNzaW5n" -H "Content-Type: application/json" -d "{\"usertype\":\"Qualitätssicherung\"}"'
+curl -X POST "${API_URL}/api/enroll-user" -H "authorization: Basic V2Vzc2luZzpXZXNzaW5n" -H "Content-Type: application/json" -d "{\"usertype\":\"Qualitätssicherung\"}"
