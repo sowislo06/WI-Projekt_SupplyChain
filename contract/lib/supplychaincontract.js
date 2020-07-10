@@ -758,10 +758,7 @@ class SupplychainContract extends Contract {
 
         // Update ledger
         await ctx.stub.putState(assetId, asset.toBuffer());
-
-
-
-
+        
         // Must return a serialized activity to caller of smart contract
         return activity.toBuffer();
         //return activity;
