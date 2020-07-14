@@ -108,29 +108,26 @@ class SupplychainContract extends Contract {
     */
    async createStation(ctx, args) {
 
-        //TODO
-        // Access Control: This transaction should only be invoked by a Producer or Retailer
+        // Access Control: Funktion soll lediglich durch die Leitung durchgeführt werden können
         let userType = await this.getCurrentUserType(ctx);
         
-        //TODO
-        if ((userType != "admin") && // admin only has access as a precaution.
-            (userType != "producer") &&
-            (userType != "retailer"))
+        if ((userType != "admin") && 
+            (userType != "Leitung"))
             throw new Error(`This user does not have access to create a station`);
 
-
+        //Parameter in JSON umformen, sodass man auf die Werte zugreifen kann
         const station_details = JSON.parse(args);
         const stationId = station_details.stationId;
 
-        console.log("incoming asset fields: " + JSON.stringify(station_details));
+        console.log("incoming station fields: " + JSON.stringify(station_details));
         
-        // Check if a station already exists with id=stationId
+        // Prüfen ob Station bereits vorhanden ist
         var stationAsBytes = await ctx.stub.getState(stationId);
         if (stationAsBytes && stationAsBytes.length > 0) {
-            throw new Error(`Error Message from createStation. Station with stationID = ${stationId} already exists.`);
+            throw new Error(`Station with stationID = ${stationId} already exists.`);
         }
 
-        // Create a new Station object
+        // Neues Station Objekt anlegen
         let station = Station.createInstance(stationId);
         station.stationId = station_details.stationId;
         station.name = station_details.name;
@@ -141,9 +138,10 @@ class SupplychainContract extends Contract {
 
         // Define and set event
         const event_obj = station;
-        event_obj.event_type = "createStation";   //  add the field "event_type" for the event to be processed
+        event_obj.event_type = "createStation"; 
 
         try {
+            //Event der Blockchain hinzufügen
             await ctx.stub.setEvent(EVENT_TYPE, event_obj.toBuffer());
         }
         catch (error) {
@@ -153,7 +151,7 @@ class SupplychainContract extends Contract {
             console.log("Attempted to send event = ", station);
         }
 
-        // Must return a serialized station to caller of smart contract
+        // Muss eine serialisierte Station an den Anrufer des Smart-Contracts zurückgeben
         return station.toBuffer();
     }
 
