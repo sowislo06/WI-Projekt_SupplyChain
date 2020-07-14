@@ -61,7 +61,7 @@ utils.connectGatewayFromConfig = async () => {
         //  4.  wallet - collection of certificates
         //  5.  username - identity to be used for performing transactions
 
-        const platform = process.env.PLATFORM || 'LOCAL';
+        const platform = process.env.PLATFORM || 'IBP';
         if (platform == 'IBP') {
             configdata = JSON.parse(fs.readFileSync('../../gateway/ibp/config.json', 'utf8'));
             console.log("Platform = " + platform);
