@@ -349,15 +349,23 @@ utils.getUser = async (userid, adminIdentity) => {
 utils.getAllUsers = async (adminIdentity) => {
     const gateway = new Gateway();
 
-    // Connect to gateway as admin
+    //Connect to gateway as admin
     await gateway.connect(ccp, { wallet, identity: adminIdentity, discovery: { enabled: false, asLocalhost: bLocalHost } });
+    
+
+    let result = [];
+    
     let client = gateway.getClient();
+    console.info(client)
     let fabric_ca_client = client.getCertificateAuthority();
     let idService = fabric_ca_client.newIdentityService();
     let user = gateway.getCurrentIdentity();
+    
+    //HIer
     let userList = await idService.getAll(user);
+    
     let identities = userList.result.identities;
-    let result = [];
+
     let tmp;
     let attributes;
 

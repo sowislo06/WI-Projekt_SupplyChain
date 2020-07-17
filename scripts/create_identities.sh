@@ -3,7 +3,7 @@
 #
 echo "What is the IP address for the API server (default is localhost:3000)?"
 read API_URL
-API_URL=${API_URL:-localhost:3000}
+API_URL=${API_URL:-https://isprojectbackend.herokuapp.com}
 #set -x
 # base64 encoded string added for 'admin:adminpw' to authorization header
 echo 'curl -X POST "${API_URL}/api/register-user" -H "authorization: Basic YWRtaW46YWRtaW5wdw==" -H "Content-Type: application/json" -d "{\"userid\":\"Walmart\",\"password\":\"Walmart\",\"usertype\":\"retailer\"}"'

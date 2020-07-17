@@ -24,7 +24,7 @@ export class ApiService {
   activities$: Observable<any[]> = this.ActivitiesData.asObservable();
 
 
-  baseUrl = "http://localhost:3000";
+  baseUrl = "https://isprojectbackend.herokuapp.com";
 
   constructor(private httpClient: HttpClient, private userService: UserService) {}
 

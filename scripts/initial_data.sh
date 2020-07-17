@@ -5,7 +5,7 @@
 #
 echo "What is the IP address for the API server (default is localhost:3000)?"
 read API_URL
-API_URL=${API_URL:-http://localhost:3000}
+API_URL=${API_URL:-https://isprojectbackend.herokuapp.com}
 echo "Do you want to register identities? [y,n]"
 read yn
 case $yn in
