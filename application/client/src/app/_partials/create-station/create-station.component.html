@@ -8,7 +8,6 @@
                   <p class="card-category"> Bitte alle Felder ausfüllen</p>
                 </div>
                 <div class="card-body">
-
                   <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
@@ -23,7 +22,6 @@
                   <div *ngIf="submitted" class="results">
                       <p *ngIf="success; else elseBlock">Station wurde erfolgreich gespeichert!</p>
                       <ng-template #elseBlock></ng-template>
-                    
                   </div>
                 </div>
               </div>

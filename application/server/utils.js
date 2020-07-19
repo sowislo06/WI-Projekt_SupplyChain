@@ -180,7 +180,6 @@ utils.submitTx = async(contract, txName, ...args) => {
     console.log(">>>utils.submitTx..."+txName+" ("+args+")");
     let result = contract.submitTransaction(txName, ...args);
     return result.then (response => {
-        // console.log ('Transaction submitted successfully;  Response: ', response.toString());
         console.log ('utils.js: Transaction submitted successfully');
         return Promise.resolve(response.toString());
     },(error) =>
