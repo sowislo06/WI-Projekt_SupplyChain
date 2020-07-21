@@ -179,7 +179,7 @@ supplychainRouter.route('/assets').get(function (request, response) {
             response.send(utils.prepareErrorResponse(error, STATUS_SERVER_ERROR,
                 "There was a problem getting the list of assets."));
         });
-});  //  process route stations/
+});  
 
 supplychainRouter.route('/assets').post(function (request, response) {
     submitTx(request, 'createAsset', JSON.stringify(request.body))
