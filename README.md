@@ -1,2 +1,2 @@
 WI-Projekt 2020
-Lehrstuhl: 
+Lehrstuhl: Unternehmensrechnung und Wirtschaftsinformatik
