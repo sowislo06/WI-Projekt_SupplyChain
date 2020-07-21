@@ -111,9 +111,14 @@ class SupplychainContract extends Contract {
         // Access Control: Funktion soll lediglich durch die Leitung durchgeführt werden können
         let userType = await this.getCurrentUserType(ctx);
         
-        if ((userType != "admin") && 
-            (userType != "Leitung"))
-            throw new Error(`This user does not have access to create a station`);
+        //["Qualitätssicherung", "Mitarbeiter", "Einkauf", "Verkauf", "Kunde", "Leitung"];
+        if ((userType != "admin") &&
+            (userType != "Einkauf") && 
+            (userType != "Leitung") &&
+            (userType != "Qualitätssicherung") &&
+            (userType != "Mitarbeiter") &&
+            (userType != "Verkauf"))
+                throw new Error(`This user does not have access to create a station`);
 
         //Parameter in JSON umformen, sodass man auf die Werte zugreifen kann
         const station_details = JSON.parse(args);
@@ -172,6 +177,18 @@ class SupplychainContract extends Contract {
             throw new Error('stationId is required as input')
         }
 
+        //TODO
+        // Access Control: This transaction should only be invoked by a Producer or Retailer
+        let userType = await this.getCurrentUserType(ctx);
+        
+        if ((userType != "admin") &&
+            (userType != "Einkauf") && 
+            (userType != "Leitung") &&
+            (userType != "Qualitätssicherung") &&
+            (userType != "Mitarbeiter") &&
+            (userType != "Verkauf"))
+                throw new Error(`This user does not have access to query a station`);
+
         var stationAsBytes = await ctx.stub.getState(stationId);
 
         //  Set an event (irrespective of whether the station existed or not)
@@ -216,7 +233,20 @@ class SupplychainContract extends Contract {
     */
     async queryAllStations(ctx) {
         const startKey = 'station-0000';
-        const endKey = 'station-ZZZZ';
+        const endKey = 'station-zzzz';
+
+        //TODO
+        // Access Control: This transaction should only be invoked by a Producer or Retailer
+        let userType = await this.getCurrentUserType(ctx);
+        
+        //TODO
+        if ((userType != "admin") &&
+            (userType != "Einkauf") && 
+            (userType != "Leitung") &&
+            (userType != "Qualitätssicherung") &&
+            (userType != "Mitarbeiter") &&
+            (userType != "Verkauf"))
+            throw new Error(`This user does not have access to query all stations`);
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
@@ -316,8 +346,8 @@ class SupplychainContract extends Contract {
         
         //TODO
         if ((userType != "admin") && // admin only has access as a precaution.
-            (userType != "producer") &&
-            (userType != "retailer"))
+            (userType != "Einkauf") && 
+            (userType != "Leitung"))
             throw new Error(`This user does not have access to create an asset`);
 
 
@@ -389,6 +419,18 @@ class SupplychainContract extends Contract {
    async queryAsset(ctx, assetId) {
         console.info('============= queryAsset ===========');
 
+        //TODO
+        // Access Control: This transaction should only be invoked by a Producer or Retailer
+        let userType = await this.getCurrentUserType(ctx);
+        
+        if ((userType != "admin") &&
+            (userType != "Einkauf") && 
+            (userType != "Leitung") &&
+            (userType != "Qualitätssicherung") &&
+            (userType != "Mitarbeiter") &&
+            (userType != "Verkauf"))
+            throw new Error(`This user does not have access to query an asset`);
+
         if (assetId.length < 1) {
             throw new Error('assetId is required as input')
         }
@@ -440,6 +482,18 @@ class SupplychainContract extends Contract {
     async queryAssetsFromStation(ctx, stationId) {
         const startKey = 'asset-0000';
         const endKey = 'asset-ZZZZ';
+
+        //TODO
+        // Access Control: This transaction should only be invoked by a Producer or Retailer
+        let userType = await this.getCurrentUserType(ctx);
+        
+        if ((userType != "admin") &&
+            (userType != "Einkauf") && 
+            (userType != "Leitung") &&
+            (userType != "Qualitätssicherung") &&
+            (userType != "Mitarbeiter") &&
+            (userType != "Verkauf"))
+            throw new Error(`This user does not have access`);
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
@@ -526,6 +580,16 @@ class SupplychainContract extends Contract {
             throw new Error('assetId is required as input')
         }
 
+        //TODO
+        // Access Control: This transaction should only be invoked by a Producer or Retailer
+        let userType = await this.getCurrentUserType(ctx);
+        
+        //TODO
+        if ((userType != "admin") && // admin only has access as a precaution.
+            (userType != "Leitung") && 
+            (userType != "Qualitätssicherung"))
+            throw new Error(`This user does not have access to update the quality`);
+
         // Retrieve the current asset using key provided
         var assetAsBytes = await ctx.stub.getState(assetId);
         if (!assetAsBytes || assetAsBytes.length === 0) {
@@ -568,6 +632,7 @@ class SupplychainContract extends Contract {
             throw new Error('assetId is required as input')
         }
 
+
         // Retrieve the current asset using key provided
         var assetAsBytes = await ctx.stub.getState(assetId);
         if (!assetAsBytes || assetAsBytes.length === 0) {
@@ -577,12 +642,7 @@ class SupplychainContract extends Contract {
         // Convert asset so we can modify fields
         var asset = Asset.deserialize(assetAsBytes);
 
-        // Access Control: This transaction should only be invoked by designated Producer
-        let userId = await this.getCurrentUserId(ctx);
-
-        if (userId != "admin") // admin only has access as a precaution.
-            throw new Error(`${userId} does not have access to update quality from ${assetId}`);
-
+        
         // Change currentQuality
         asset.stationId = stationId;
 
@@ -605,10 +665,16 @@ class SupplychainContract extends Contract {
         const endKey = 'asset-zzzz';
 
 
-        let userId = await this.getCurrentUserId(ctx);
+        let userType = await this.getCurrentUserType(ctx);
+        
  
-        if (userId != "admin") // admin only has access as a precaution.
-            throw new Error(`${userId} does not have access`);
+        if ((userType != "admin") &&
+            (userType != "Einkauf") && 
+            (userType != "Leitung") &&
+            (userType != "Qualitätssicherung") &&
+            (userType != "Mitarbeiter") &&
+            (userType != "Verkauf"))
+            throw new Error(`${userType} does not have access`);
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
@@ -667,10 +733,11 @@ class SupplychainContract extends Contract {
         // Access Control: This transaction should only be invoked by a Producer or Retailer
         let userType = await this.getCurrentUserType(ctx);
         
-        //TODO
-        if ((userType != "admin") && // admin only has access as a precaution.
-            (userType != "producer") &&
-            (userType != "retailer"))
+        if ((userType != "admin") &&
+            (userType != "Leitung") &&
+            (userType != "Qualitätssicherung") &&
+            (userType != "Mitarbeiter") &&
+            (userType != "Verkauf"))
             throw new Error(`This user does not have access to create an activity`);
 
 
@@ -777,6 +844,20 @@ class SupplychainContract extends Contract {
     async queryActivity(ctx, activityId) {
         console.info('============= queryActivity ===========');
 
+
+        //TODO
+        // Access Control: This transaction should only be invoked by a Producer or Retailer
+        let userType = await this.getCurrentUserType(ctx);
+        
+        if ((userType != "admin") &&
+            (userType != "Einkauf") && 
+            (userType != "Leitung") &&
+            (userType != "Qualitätssicherung") &&
+            (userType != "Mitarbeiter") &&
+            (userType != "Verkauf") &&
+            (userType != "Kunde"))
+            throw new Error(`This user does not have access to query an activity`);
+
         if (activityId.length < 1) {
             throw new Error('activityId is required as input')
         }
@@ -824,7 +905,20 @@ class SupplychainContract extends Contract {
     */
     async queryAllActivities(ctx) {
         const startKey = 'activity-0000';
-        const endKey = 'activity-ZZZZ';
+        const endKey = 'activity-zzzz';
+
+        //TODO
+        // Access Control: This transaction should only be invoked by a Producer or Retailer
+        let userType = await this.getCurrentUserType(ctx);
+        
+        if ((userType != "admin") &&
+            (userType != "Einkauf") && 
+            (userType != "Leitung") &&
+            (userType != "Qualitätssicherung") &&
+            (userType != "Mitarbeiter") &&
+            (userType != "Verkauf") &&
+            (userType != "Kunde"))
+            throw new Error(`This user does not have access to query an activity`);
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
@@ -870,7 +964,20 @@ class SupplychainContract extends Contract {
         */
     async queryActivityFromAsset(ctx, assetId) {
         const startKey = 'activity-0000';
-        const endKey = 'activity-ZZZZ';
+        const endKey = 'activity-zzzz';
+
+        //TODO
+        // Access Control: This transaction should only be invoked by a Producer or Retailer
+        let userType = await this.getCurrentUserType(ctx);
+        
+        if ((userType != "admin") &&
+            (userType != "Einkauf") && 
+            (userType != "Leitung") &&
+            (userType != "Qualitätssicherung") &&
+            (userType != "Mitarbeiter") &&
+            (userType != "Verkauf") &&
+            (userType != "Kunde"))
+            throw new Error(`This user does not have access to query an activity`);
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
