@@ -15,14 +15,17 @@ export class DashboardComponent implements OnInit {
   currentUser: any;
   columnsToDisplay = ['assetId', 'name', 'stationId'];
   stationList: any[];
-  assetList: any[];
+  grade: any;
   types: any[];
   success = false;
   station: Object;
   asset: Object;
   submitted = false;
   messageForm: FormGroup;
+  maxCap: any;
+  sumAssets: any;
 
+  loaded = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -36,6 +39,7 @@ export class DashboardComponent implements OnInit {
     console.log("currentUser: " + this.currentUser);
     this.regulator = this.regulator !== undefined;
     console.log(`Regulator Boolean attribute is ${this.regulator ? '' : 'non-'}present!`);
+
 
     //Holt alle Stations und speichert diese in das Array
     this.getStations();
@@ -51,9 +55,14 @@ export class DashboardComponent implements OnInit {
       this.assets = new MatTableDataSource(currentAssets);
       this.assets.paginator = this.paginator;
       this.assets.sort = this.sort;
+      
+
+
       this.cd.markForCheck();
     })
     this.api.queryAllAssets();
+
+    
   }
 
   applyFilter(filterValue: string) {
@@ -72,19 +81,32 @@ export class DashboardComponent implements OnInit {
     if (this.messageForm.invalid) {
       return;
     }
-
     //Schreibt den Wert aus den MessageForm auf eine globale Variable
     this.api.id = this.messageForm.controls.stationid.value;
-    
-
+  
+    this.api.queryAssetsFromStation()
     //Dieses Konstrukt lädt alle Assets aus der Blockchain
     //Mithilfe eines Oberservables
     this.api.assets$.subscribe(currentAssets => {
       this.assets = new MatTableDataSource(currentAssets);
       this.cd.markForCheck();
+
+      var assetArray = Object.keys(currentAssets).map(function (assetIndex) {
+        let asset = currentAssets[assetIndex];
+        return asset;
+      });
+
+      this.maxCap = assetArray.length;
+      this.grade = (this.maxCap/200)*100;
     })
-    this.api.queryAssetsFromStation();
+    
+
+    
+    this.loaded = true;
   }
+    
+    
+  
 
 
   // Get the list of registered Stations

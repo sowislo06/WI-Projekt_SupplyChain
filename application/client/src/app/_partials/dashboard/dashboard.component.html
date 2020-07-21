@@ -28,12 +28,12 @@
           </div>
       </div>
 
-      <!--Liste aller Aktivitäten-->
+      <!--Liste aller Assets-->
       <div class="col-md-9">
         <div class="card">
             <div class="card-header card-header-danger">
-                <h4 class="card-title ">Supply Chain</h4>
-                <p class="card-category"> Hier finden Sie die Lieferkette aller Artikel</p>
+                <h4 class="card-title ">Inhalt des Lagers</h4>
+                <p class="card-category"> Hier finden Sie den Inhalt der Lagerplätze</p>
             </div>
             <div class="card-body">
               <section id="assets-table">
@@ -74,7 +74,7 @@
 
 
 <!-- DASHBOARD -->
-<div *ngIf="!isLoading">
+<div *ngIf="loaded">
   <div *ngIf="submitted" class="results">
     <div class="main-content">
       <div class="container-fluid">
@@ -83,51 +83,48 @@
                   <div class="card card-stats">
                       <div class="card-header card-header-warning card-header-icon">
                           <div class="card-icon">
-                              <i class="material-icons">calendar_today</i>
+                              <i class="material-icons">keyboard_capslock</i>
                           </div>
-                          <p class="card-category">Kapazität</p>
-                          <h3 class="card-title">{{diff}}
-                              <small>Tage</small>
-                          </h3>
+                          <p class="card-category">Lagerkapazität</p>
+                          <h3 class="card-title">200</h3>
                       </div>
                       <div class="card-footer">
-                          <div class="stats">
-                              <i class="material-icons text-danger">warning</i>
-                              <a href="javascript:void(0)">Get More Space...</a>
-                          </div>
-                      </div>
+                        <div class="stats">
+                            <i class="material-icons">calculate</i> Tracked with real Data from Blockchain
+                        </div>
+                    </div>
                   </div>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6">
                   <div class="card card-stats">
                       <div class="card-header card-header-success card-header-icon">
                           <div class="card-icon">
-                              <i class="material-icons">calendar_today</i>
+                              <i class="material-icons">shopping_basket</i>
                           </div>
                           <p class="card-category">Belegte Lagerplätze</p>
-                          <h3 class="card-title">{{start}}</h3>
+                          <h3 class="card-title">{{maxCap}}</h3>
                       </div>
                       <div class="card-footer">
-                          <div class="stats">
-                              <i class="material-icons">date_range</i> Last 24 Hours
-                          </div>
-                      </div>
+                        <div class="stats">
+                            <i class="material-icons">calculate</i> Tracked with real Data from Blockchain
+                        </div>
+                    </div>
                   </div>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6">
                   <div class="card card-stats">
                       <div class="card-header card-header-danger card-header-icon">
                           <div class="card-icon">
-                              <i class="material-icons">timer</i>
+                              <i class="material-icons">donut_large</i>
                           </div>
                           <p class="card-category">Füllgrad</p>
-                          <h3 class="card-title">{{avg}}</h3>
+                          <h3 class="card-title">{{ grade }}%</h3>
                       </div>
                       <div class="card-footer">
-                          <div class="stats">
-                              <i class="material-icons">local_offer</i> Tracked from Github
-                          </div>
-                      </div>
+                        <div class="stats">
+                            <i class="material-icons">calculate</i> Tracked with real Data from Blockchain
+                        </div>
+                    </div>
                   </div>
               </div>
           </div>      
