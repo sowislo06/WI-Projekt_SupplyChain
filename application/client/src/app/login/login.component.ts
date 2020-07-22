@@ -21,7 +21,7 @@ export class LoginComponent {
     private userService: UserService
   ) { }
 
-  login(state: RouterStateSnapshot) {
+  login() {
     console.log("In login ()");
     this.loading = true;
 
