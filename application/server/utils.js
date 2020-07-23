@@ -282,11 +282,7 @@ utils.enrollUser = async (userid, userpwd, usertype) => {
 //  Output:     no explicit output;  (Global variable) contract will be set to this user's context
 utils.setUserContext = async (userid, pwd) => {
     console.log('\n>>>setUserContext...');
-
-    // It is possible that the user has been registered and enrolled in Fabric CA earlier
-    // and the certificates (in the wallet) could have been removed.
-    // Note that this case is not handled here.
-
+    
     // Verify if user is already enrolled
     const userExists = await wallet.exists(userid);
     if (!userExists) {
