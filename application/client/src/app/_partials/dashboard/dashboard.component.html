@@ -50,6 +50,7 @@
                         <span *ngIf="column=='assetId'"> Asset ID </span>
                         <span *ngIf="column=='name'"> Name </span>
                         <span *ngIf="column=='stationId'"> Station ID </span>
+                        <span *ngIf="column=='qualitychecked'">Quality checked</span>
                       </th>
                       <td mat-cell *matCellDef="let element">
                         <span> {{ element[column] }}</span>

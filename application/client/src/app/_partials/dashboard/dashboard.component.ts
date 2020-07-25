@@ -13,7 +13,7 @@ export class DashboardComponent implements OnInit {
 
   assets: MatTableDataSource<Asset[]>;
   currentUser: any;
-  columnsToDisplay = ['assetId', 'name', 'stationId'];
+  columnsToDisplay = ['assetId', 'name', 'stationId', 'qualitychecked'];
   stationList: any[];
   grade: any;
   types: any[];
@@ -136,6 +136,7 @@ export class DashboardComponent implements OnInit {
 export interface Asset {
   assetId: string;
   name: string;
-  stationId: string
+  stationId: string;
+  qualitychecked: boolean
 }
 
